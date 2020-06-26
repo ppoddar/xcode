@@ -10,11 +10,41 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+    let name:String = "hiraafood"
+    let logo:String = ""
+    var window:UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        print("=========== Starting application =======")
+        Server.singleton.get(url: "/connect") {
+            result in
+                switch result {
+                case .success:
+                    print("established server contact")
+                    return
+                case .failure(let error) :
+                    print("failed to establish server contact")
+                    print(error)
+
+                }
+            }
+        
+        if #available(iOS 13, *) {
+            print("iOS 13 is available. SceenDelegate will open the window")
+        } else {
+            
+        }
+        // Initialize the window
+//        window = UIWindow.init(frame: UIScreen.main.bounds)
+                
+        // Allocate memory for an instance of the 'MainViewController' class
+ //       let mainViewController = WelcomeViewController()
+        
+        // Set the root view controller of the app's window
+ //       window!.rootViewController = mainViewController
+        
+        // Make the window visible
+  //      window!.makeKeyAndVisible()
+        
         return true
     }
 
@@ -33,5 +63,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    func getUser() -> User {
+        var user:User = User()
+        user.fullName = NSFullUserName()
+        let userDefaults:UserDefaults = UserDefaults.standard
+        user.name = userDefaults.string(forKey: "name") ?? ""
+        user.fullName = userDefaults.string(forKey: "fullname") ?? ""
+        return user
+        
+    }
 }
 

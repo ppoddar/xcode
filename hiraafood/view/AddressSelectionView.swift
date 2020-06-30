@@ -25,9 +25,7 @@ class AddressSelectionView: UIView {
         self.nextAddress = NavigationButton(next:true)
         self.prevAddress = NavigationButton(next:false)
         self.newAddress  = UIButton()
-        
         super.init(frame:.zero)
-        
         nextAddress.delegate = self
         prevAddress.delegate = self
         self.newAddress.setTitle("new address", for: .normal)
@@ -45,17 +43,13 @@ class AddressSelectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /*
-     * Must be called to set up this view
-     */
-     func setupView() {
-        print("AddressSeletionView.setupView()")
+    
+    func setupView() {
         self.addressView.translatesAutoresizingMaskIntoConstraints = false
         self.newAddress.translatesAutoresizingMaskIntoConstraints  = false
         self.prevAddress.translatesAutoresizingMaskIntoConstraints = false
         self.nextAddress.translatesAutoresizingMaskIntoConstraints = false
 
-        addressView.frame = CGRect(x:0,y:0, width:addressView.intrinsicContentSize.width, height:addressView.intrinsicContentSize.height)
         self.addSubview(addressView)
         self.addSubview(nextAddress)
         self.addSubview(prevAddress)
@@ -66,25 +60,26 @@ class AddressSelectionView: UIView {
         //print("viewWillLayoutSubviews. Computing frame")
         let safeArea = self.safeAreaLayoutGuide
         let margins  = self.layoutMarginsGuide
-        print("within safeArea \(safeArea)")
-        print("with   margin \(margins)")
+        //print("within safeArea \(safeArea.layoutFrame)")
+        //print("with   margin \(margins.layoutFrame)")
        
         addressView.topAnchor.constraint(equalTo:  safeArea.topAnchor).isActive = true
         addressView.leftAnchor.constraint(equalTo: safeArea.leftAnchor).isActive = true
         //addressView.widthAnchor.constraint(equalTo: safeArea.widthAnchor).isActive = true
         //addressView.heightAnchor.constraint(equalTo: safeArea.heightAnchor, constant: -50).isActive = true
-        print("AddressSelectionView.AddressView frame \(addressView.frame)")
+    
         prevAddress.topAnchor.constraint(equalTo:  addressView.bottomAnchor).isActive = true
-        prevAddress.leftAnchor.constraint(equalTo: safeArea.leftAnchor).isActive = true
+        prevAddress.leftAnchor.constraint(equalTo: margins.leftAnchor).isActive = true
         
         nextAddress.topAnchor.constraint(equalTo: addressView.bottomAnchor).isActive = true
-        nextAddress.rightAnchor.constraint(equalTo: safeArea.rightAnchor).isActive = true
+        nextAddress.rightAnchor.constraint(equalTo: margins.rightAnchor).isActive = true
 
         newAddress.topAnchor.constraint(equalTo:   nextAddress.bottomAnchor).isActive = true
         newAddress.leftAnchor.constraint(equalTo:  addressView.leftAnchor).isActive = true
         newAddress.rightAnchor.constraint(equalTo: addressView.rightAnchor).isActive = true
     
         showAddress()
+
     }
     
         
@@ -115,7 +110,7 @@ class AddressSelectionView: UIView {
      */
     private func showAddress() {
         let key = keyOrder[self.selectedAddressIndex]
-        print("showing address [\(key)] at index \(selectedAddressIndex) of \(addresses.count)")
+        //print("showing address [\(key)] at index \(selectedAddressIndex) of \(addresses.count)")
         addressView.address = self.addresses[key]
     }
    
@@ -170,10 +165,10 @@ class NavigationButton :UIButton {
             return
         }
         if (up) {
-            print("Navigation button \(self.titleLabel?.text) calling showNext()")
+            //print("Navigation button \(self.titleLabel?.text) calling showNext()")
             c.showNext()
         } else {
-            print("Navigation button \(self.titleLabel?.text) calling showPrev()")
+            //print("Navigation button \(self.titleLabel?.text) calling showPrev()")
             c.showPrev()
         }
     }

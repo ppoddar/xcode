@@ -1,42 +1,43 @@
 import UIKit
+
+
 class Rating:  UIStackView {
     static let MAX_RATING = 5
+//    static var config:UIImage.SymbolConfiguration
+//        = UIImage.SymbolConfiguration
     
     init(_ rating:Int) {
-        self.rating = rating
         super.init(frame:.zero)
         translatesAutoresizingMaskIntoConstraints = false
         axis = .horizontal
         alignment = .fill
         distribution = .fill
+        for i in 1...Rating.MAX_RATING {
+            let subview = i <= rating ? star_filled() : star_unfilled()
+            subview.translatesAutoresizingMaskIntoConstraints = false
+            addArrangedSubview(subview)
+        }
+        
+        
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var rating:Int? {
-        didSet {
-            guard let r = rating else {return}
-            for i in 1...Rating.MAX_RATING {
-                let subview = i <= r ? star_filled() : star_unfilled()
-                subview.translatesAutoresizingMaskIntoConstraints = false
-                addArrangedSubview(subview)
-            }
-        }
-    }
-    
     func star_filled () -> UIImageView {
-        return named_image(name:"star-filled")
+        return named_image(name:"star.fill")
     }
     
     func star_unfilled () -> UIImageView {
-        return named_image(name:"star-unfilled")
+        return named_image(name:"star")
     }
     
     func named_image(name:String) -> UIImageView {
-        let image:UIImage? = UIImage(named:name)
+        let config:UIImage.SymbolConfiguration = UIImage.SymbolConfiguration(weight: .medium)
+        let image:UIImage? = UIImage(systemName: name, withConfiguration: config)
         let view = UIImageView(image:image)
+        view.tintColor = UIConstants.COLOR_1
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
         

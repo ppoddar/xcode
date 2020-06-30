@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum ControllerUnderTest : String, CaseIterable {
-    case welcome, address, order, payment, checkout
+    case welcome, order, delivery, payment, checkout, address
 }
 
 let items:[Item] = [
@@ -70,8 +70,7 @@ let addresses = [
  ]
 struct TestDataFactory {
     static func getMenu() -> Menu {
-        let menu:Menu = Menu()
-        menu.items = items
+        let menu:Menu = Menu(items: items)
         return menu
     }
     static func randomItem() -> Item {
@@ -120,8 +119,10 @@ struct TestDataFactory {
              return PaymentController(oid:"1234",
                                       billingAddress: TestDataFactory.getAddress(key: "billing"),
                                       deliveryAddress: TestDataFactory.getAddress(key: "delivery"))
-         case .address:
-            return AddressViewController(order: TestDataFactory.getOrder(), addresses:TestDataFactory.getAddresses())
+         case .delivery:
+            return DeliveryController(order: TestDataFactory.getOrder(), addresses:TestDataFactory.getAddresses())
+        case .address:
+            return AddressSelectionViewController(addresses: TestDataFactory.getAddresses())
          }
 
     }

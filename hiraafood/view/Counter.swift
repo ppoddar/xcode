@@ -44,11 +44,15 @@ class Counter: UIStackView {
     }
     
     func setupView() {
-        let plus  = UIImage(systemName: "plus.square.fill",  withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-        let minus = UIImage(systemName: "minus.square.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-        stepper.setIncrementImage(plus, for: .normal)
-        stepper.setDecrementImage(minus, for: .normal)
+        let plus  = UIImageView(image:UIImage(systemName: "plus.square.fill",  withConfiguration: UIImage.SymbolConfiguration(scale: .medium)))
+        let minus = UIImageView(image:UIImage(systemName: "minus.square.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium)))
+        plus.tintColor = .blue
+        minus.tintColor = .blue
+        stepper.setIncrementImage(plus.image, for: .normal)
+        stepper.setDecrementImage(minus.image, for: .normal)
         stepper.addTarget(self, action: #selector(changeQuantity), for:.valueChanged)
+        
+        
         label.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
         label.setTitle(String(Int(stepper.value)), for: .normal)
         label.setTitleColor(.black, for: .normal)

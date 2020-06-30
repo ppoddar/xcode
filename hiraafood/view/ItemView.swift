@@ -33,7 +33,7 @@ public class ItemView: UIView {
             let rating = Rating(i.rating)
             let price = UIFactory.label(UIFactory.amount(i.price))
             
-            print("=========> adding subviews")
+            //print("=========> adding subviews")
 
             self.addSubview(name)
             self.addSubview(description)
@@ -57,7 +57,7 @@ public class ItemView: UIView {
             let height = CGFloat(numberOfLines)*UIConstants.LINE_HEIGHT
             description.topAnchor.constraint(equalTo: name.bottomAnchor, constant: UIConstants.VGAP).isActive = true
             description.leftAnchor.constraint(equalTo:name.leftAnchor).isActive = true
-            description.rightAnchor.constraint(equalTo:safeArea.rightAnchor, constant: -UIConstants.RIGHT_MARGIN).isActive = true
+            description.rightAnchor.constraint(equalTo:safeArea.rightAnchor).isActive = true
             description.heightAnchor.constraint(equalToConstant:height).isActive = true
             
             price.topAnchor.constraint(equalTo: itemImage.bottomAnchor, constant:UIConstants.VGAP).isActive = true

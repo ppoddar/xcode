@@ -16,9 +16,9 @@ class ItemCell: UITableViewCell {
     }
     
     override init(style:UITableViewCell.CellStyle, reuseIdentifier:String?) {
-        //print("init \(ItemCell.self) with \(style) and \(reuseIdentifier)")
-        super.init(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier:"item")
-        self.accessoryType = .disclosureIndicator
+        super.init(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier:reuseIdentifier)
+        accessoryType = .disclosureIndicator
+        
     }
     
     required init?(coder: NSCoder) {
@@ -31,13 +31,8 @@ class ItemCell: UITableViewCell {
         }
         self.textLabel?.text = item.name
         self.detailTextLabel?.text = item.category
-        
-        //let imageView:UIImageView = UIImageView()
-        //let url:URL = URL(string: item.image!)!
-        //image.loadImage(imageURL: url)
         let image = ImageLibrary().getItemImage(name:item.image)
         self.imageView?.image = image
-        
-        
     }
+ 
 }

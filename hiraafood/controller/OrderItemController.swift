@@ -10,13 +10,17 @@ import UIKit
 class OrderItemController: UIViewController {
     var cart:Cart
     var item:Item
-    var units:Counter            = Counter()
-    var comment:KeyboardTextView = UIFactory.textView(placeHolder: "any instructions for the chef?")
+    var units:Counter  = Counter()
+    var itemView:ItemView?
+    var orderButton:UIButton
+    var comment:KeyboardTextView = UIFactory.textView(placeHolderText: "any instructions for the chef?")
     
     init(item:Item,  cart:Cart) {
         print("created OrderItemController with \(item)")
         self.item = item
         self.cart = cart
+        self.itemView = ItemView()
+        self.orderButton = UIFactory.button("order")
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -25,63 +29,86 @@ class OrderItemController: UIViewController {
     }
     
     override func viewDidLoad() {
-        print("========> OrderItemController viewDidLoad()")
-
         super.viewDidLoad()
+        setSceneHeader(titleText: "Order")
         view.backgroundColor = .white
-        self.viewRespectsSystemMinimumLayoutMargins = false
         // navigation buttons
         self.navigationItem.rightBarButtonItem  =
             UIBarButtonItem(barButtonSystemItem: .close,
                     target: self,
                     action: #selector(back))
-    
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "X",
+            style: .plain,
+            target: self,
+            action: #selector(back))
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
     }
+    
+    @objc func keyboardWillShow(notification:NSNotification) {
+        print("keyboad will show")
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+        print("keyboard size \(keyboardSize)")
+        print("view origin \(self.view.frame.origin.y)")
+        self.view.frame.origin.y -= keyboardSize.height
+        print("adjusted to \(self.view.frame.origin.y)")
+    }
+    
+    @objc func keyboardWillHide(notification:NSNotification) {
+           if self.view.frame.origin.y != 0 {
+               self.view.frame.origin.y = 0
+           }
+    }
+    
     override func loadView() {
         super.loadView()
-        print("========> OrderItemController loadView()")
 
-        let itemView = ItemView()
-        itemView.item = self.item // must set item
-        let orderButton  = UIFactory.button("Order")
-        orderButton.backgroundColor = .blue
-        orderButton.tintColor = .white
+        itemView?.item = self.item // must set item
         UIFactory.round(orderButton)
         let existingItem:OrderItem? = cart.items[item.sku]
         units.start = existingItem?.units ?? 1
-
-        
         // action handlers
         orderButton.addTarget(self, action: #selector(order), for:.touchUpInside)
-        
+        comment.backgroundColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.1)
         // Layout is driven via intermediate content
         // on which layput margins are honored
-        let content = UIView()
-        content.translatesAutoresizingMaskIntoConstraints = false
-        content.addSubview(itemView)
-        content.addSubview(units)
-        content.addSubview(comment)
-        content.addSubview(orderButton)
-        self.view.addSubview(content)
-        
+        self.view.addSubview(itemView!)
+        self.view.addSubview(units)
+        self.view.addSubview(comment)
+        self.view.addSubview(orderButton)
+    }
+    /*
+     * point at  which bounds are computed
+     */
+    override func viewWillLayoutSubviews() {
         let safeArea = self.view.safeAreaLayoutGuide
-        content.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        content.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        content.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 1).isActive = true
-        content.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 1).isActive = true
-
-        itemView.leftAnchor.constraint(equalTo: content.leftAnchor, constant:UIConstants.LEFT_MARGIN).isActive = true
-        itemView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant:UIConstants.TOP_MARGIN).isActive = true
-        itemView.widthAnchor.constraint(equalTo: content.widthAnchor, multiplier: 1).isActive = true
-        itemView.heightAnchor.constraint(lessThanOrEqualTo: content.heightAnchor, multiplier: 0.5).isActive = true
+        self.view.layoutMargins = UIEdgeInsets(
+            top: safeArea.layoutFrame.origin.y,
+            left:safeArea.layoutFrame.origin.x,
+            bottom:safeArea.layoutFrame.height + safeArea.layoutFrame.origin.y,
+            right: safeArea.layoutFrame.width + safeArea.layoutFrame.origin.x)
         
-        units.topAnchor.constraint(equalTo:  itemView.bottomAnchor, constant: UIConstants.LINE_HEIGHT).isActive = true
-        units.leftAnchor.constraint(equalTo: itemView.leftAnchor, constant:UIConstants.LEFT_MARGIN).isActive = true
+        guard let iv:ItemView = itemView else {return}
+        let margins = self.view.layoutMarginsGuide
         
+        iv.leftAnchor.constraint(equalTo:   margins.leftAnchor).isActive = true
+        iv.topAnchor.constraint(equalTo:    margins.topAnchor).isActive = true
+        iv.rightAnchor.constraint(equalTo:  safeArea.rightAnchor, constant: -margins.layoutFrame.width).isActive = true
+        iv.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.5).isActive = true
+        
+        units.leftAnchor.constraint(equalTo: margins.leftAnchor, constant:UIConstants.LEFT_MARGIN).isActive = true
+        units.topAnchor.constraint(equalTo:  iv.bottomAnchor, constant: UIConstants.LINE_HEIGHT).isActive = true
+        
+        comment.leftAnchor.constraint(equalTo: margins.leftAnchor).isActive = true
         comment.topAnchor.constraint(equalTo: units.bottomAnchor, constant:UIConstants.VGAP).isActive = true
-        comment.leftAnchor.constraint(equalTo: itemView.leftAnchor).isActive = true
-        comment.rightAnchor.constraint(equalTo: itemView.rightAnchor, constant: -UIConstants.RIGHT_MARGIN).isActive = true
-        let numberOfLines:Int = 6
+        comment.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -margins.layoutFrame.width).isActive = true
+        let numberOfLines:Int = 4
         let height = CGFloat(numberOfLines)*UIConstants.LINE_HEIGHT
         comment.heightAnchor.constraint(equalToConstant:height).isActive = true
 
@@ -91,12 +118,6 @@ class OrderItemController: UIViewController {
 
     }
     
-    
-    
-//
-    
-    
-    
     @objc func back() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -105,6 +126,7 @@ class OrderItemController: UIViewController {
         cart.setItem(item:self.item,
             units: units.value,
             comment:comment.text)
+        (presentingViewController as? OrderPageController)?.refresh()
         back()
     }
     
@@ -114,21 +136,5 @@ class OrderItemController: UIViewController {
 
 
 
-extension UIView {
 
-    // Adds constraints to this `UIView` instances `superview` object to make sure this always has the same size as the superview.
-    // Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
-    func bindFrameToSuperviewBounds() {
-        guard let superview = self.superview else {
-            print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
-            return
-        }
 
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.topAnchor.constraint(equalTo: superview.topAnchor, constant: 0).isActive = true
-        self.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: 0).isActive = true
-        self.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 0).isActive = true
-        self.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: 0).isActive = true
-
-    }
-}

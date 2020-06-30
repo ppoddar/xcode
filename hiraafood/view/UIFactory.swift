@@ -36,7 +36,6 @@ class UIFactory {
                       fontSize:Int = 16, bold:Bool=true,
                       border:Bool = false) -> UILabel  {
         let lbl = UILabel()
-        lbl.isOpaque = true
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = textColor
         if (bold) {
@@ -292,13 +291,3 @@ extension UIButton {
 //    }
 //}
 
-extension UIStackView {
-
-    func addBackground(color: UIColor) {
-        let subview = UIView(frame: bounds)
-        subview.backgroundColor = color
-        subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        insertSubview(subview, at: 0)
-    }
-
-}

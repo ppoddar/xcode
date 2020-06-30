@@ -16,7 +16,7 @@ struct OrderItem : Codable,Hashable,Equatable {
         hasher.combine(sku)
     }
     
-    
+ /*
     mutating func decode(from decoder:Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.sku  = try container.decode(String.self, forKey: .sku)
@@ -29,5 +29,6 @@ struct OrderItem : Codable,Hashable,Equatable {
         self.units = Int(unitsS)!
 
     }
+ */
 }
 

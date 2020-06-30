@@ -19,9 +19,7 @@ class AddressView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    /*
-    *
-     */
+    
     var address:Address? {
         didSet {
             guard let addr = address else {return}
@@ -30,7 +28,7 @@ class AddressView: UIStackView {
     }
     
     func updateView(address:Address) {
-        print("AddressView.updateView with address \(address)")
+        //print("updateView \(address.kind)")
         for view in self.arrangedSubviews {
             //print("remove arranged subview \(view)")
             self.willRemoveSubview(view)
@@ -45,9 +43,7 @@ class AddressView: UIStackView {
 
         
         let header  = UIStackView()
-        header.addBackground(color: UIColor.green)
         let details = UIStackView()
-        details.addBackground(color: UIColor.white)
         details.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 5, right: 5)
         header.autoresizingMask = []
         details.autoresizingMask = []
@@ -65,9 +61,11 @@ class AddressView: UIStackView {
         
         let kind  = UIFactory.label(address.kind.rawValue, fontSize:24)
         kind.textAlignment = .center
+        kind.backgroundColor = .green
         header.addArrangedSubview(kind)
 
-        let line1 = UIFactory.label(address.line1, fontSize:18 )
+        let line1 = UIFactory.label(address.line1, fontSize:18)
+        //line1.backgroundColor = .magenta
         line1.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         details.addArrangedSubview(line1)
         

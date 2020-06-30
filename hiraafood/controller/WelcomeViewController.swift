@@ -1,6 +1,10 @@
 import UIKit
 
 class WelcomeViewController: BaseViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setSceneHeader(titleText: "Welcome")
+    }
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
@@ -30,6 +34,8 @@ class WelcomeViewController: BaseViewController {
         let page = OrderPageController()
         page.menu = menu
         show(page, sender: self)
+        //self.modalPresentationStyle = .fullScreen
+        //present(page, animated: true)
         /*
         DispatchQueue.global().async {
         

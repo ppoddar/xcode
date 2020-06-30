@@ -11,6 +11,7 @@ enum ApplicationError: Error {
     case ResponseNotJSON(body:Any?)
     case ArrayIndexOfBounds
     case unexpeceted
+    case BadPayload
 
 }
 
@@ -84,49 +85,75 @@ class Server {
      *
      */
     func post(url:String,
-              payload:Any,
+              payload:Data?,
               completion:@escaping (Result<Data,ApplicationError>) -> Void) {
         let requestURL = Server.newURL(url)
         var request:URLRequest = URLRequest(url:requestURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        print("----------- Server POST request \(requestURL)")
+        print(payload)
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: payload, options: [])
-        } catch {
-            print("can not seralize given payload \(payload)") 
-            print(error)
-        }
-            
-        print("sending POST \(requestURL) with \(String(describing: request.httpBody)) ")
-        let task = session.dataTask(with: request,
-            completionHandler:{data, response, error in
+            //request.httpBody = encodeDictionary(payload).data(using:.utf8)
+            request.httpBody = payload
+            print("sending POST \(requestURL) with \(String(describing: request.httpBody))")
+            let task = session.dataTask(with: request,
+               completionHandler:{data, response, error in
                guard let jsonData = data else {
                     completion(.failure(.ResponseNotJSON(body:data)))
                     return
                 }
                 completion(.success(jsonData))
-        })
-        task.resume()
+            })
+            task.resume()
+        } catch {
+            completion(.failure(.BadPayload))
+        }
     }
     
-    func errorMessage(_ data:Data) -> String {
-//        let decoder:JSONDecoder  = JSONDecoder()
-//        let generic = Dictionary<String,String>()
-//        do {
-//            let dict = try decoder.decode(type(of:generic), from:data)
-//            if (dict.contains("error")) {
-//                return dict["error"]
-//            } else {
-//                return  "no error message available"
-//            }
-//        } catch {
-//            return "no error message available"
-//        }
-        return String(data:data, encoding: String.Encoding.utf8) ?? "no error message available"
+    static let OPEN:String = "{"
+    static let CLOSE:String = "}"
+    static let QUOTE:String = "\""
+    static let COLON:String = ":"
+
+    func encodeDictionary<T:Encodable>(_ dict:Dictionary<String,T>) -> String {
+        print("converting dictionary to JSON String")
+        let N = dict.count
+        var keys:[String] = [String](repeating: "", count: N)
+        var values:[String] = [String](repeating: "", count: N)
+        var i:Int = 0
+        for (key,value) in dict {
+            keys[i] = key
+            values[i] = toJSONString(value)
+            print("key \(key)")
+            print(values[i])
+            i += 1
+        }
+        var json:String = Server.OPEN
+        for i in 0..<N {
+            json += Server.QUOTE + keys[i] + Server.QUOTE + Server.COLON + values[i]
+            if (i < (N-1)) {json += ","}
+        }
+        json += Server.CLOSE
+        print("final JSON")
+        print(json)
+        return json
     }
     
-    
-    
+    func toJSONString<T:Encodable>(_ obj:T) -> String {
+        print("converting object \(obj) to JSON String")
+        let encoder = JSONEncoder()
+        //encoder.outputFormatting = .prettyPrinted
+        do {
+            let data = try  encoder.encode(obj)
+            let json = String(data: data, encoding: .utf8)!
+            return json
+        } catch {
+            print(error)
+        }
+        return ""
+    }
 }
 

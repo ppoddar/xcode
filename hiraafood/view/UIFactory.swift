@@ -3,8 +3,8 @@ class UIFactory {
     
     public static var ITEM_ROW_HEIGHT:CGFloat = CGFloat(100)
     
-    static func textView(placeHolder:String="",lines:Int?=8) -> KeyboardTextView {
-        let textView = KeyboardTextView(placeHolder: placeHolder, lines:lines)
+    static func textView(placeHolderText:String="",lines:Int=8) -> KeyboardTextView {
+        let textView = KeyboardTextView(placeHolderText: placeHolderText, lines:lines)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.black.cgColor
@@ -12,8 +12,8 @@ class UIFactory {
         return textView
     }
     static func button(_ title:String?,
-        backgroundColor:UIColor = .white,
-        tintColor:UIColor = .black,
+        backgroundColor:UIColor = UIConstants.COLOR_1,
+        tintColor:UIColor = .white,
         fontSize:Int = 16, bold:Bool=true) -> UIButton  {
         let btn = UIButton(type: .system)
         btn.setTitle(title, for: .normal)
@@ -36,6 +36,7 @@ class UIFactory {
                       fontSize:Int = 16, bold:Bool=true,
                       border:Bool = false) -> UILabel  {
         let lbl = UILabel()
+        lbl.isOpaque = true
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = textColor
         if (bold) {
@@ -70,6 +71,14 @@ class UIFactory {
     static func clear(_ view:UIView) {
         view.subviews.forEach(({$0.removeFromSuperview()}))
     }
+    
+    static func clearStack(_ view:UIStackView) {
+         view.arrangedSubviews.forEach(({
+            view.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+         }))
+     }
+
     
     static func imageView() -> UIImageView  {
         let imageView = UIImageView()
@@ -110,20 +119,101 @@ class UIFactory {
         label.attributedText = myString
         return label
     }
-
+    
+    
 }
 
 extension UIViewController {
+    /*
+     * add a child view controller
+     */
     func addViewController(_ child:UIViewController) {
         self.view.addSubview(child.view)
         self.addChild(child)
         child.didMove(toParent: self)
     }
+    /*
+     * raises an alert
+     */
     func alert(title:String,message:String) {
-    let alert = UIAlertController(title: title, message:  message, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-    self.present(alert, animated: true)
+        if Thread.isMainThread {
+            _showAlert(title: title, message: message)
+        } else {
+            DispatchQueue.main.async {
+                self._showAlert(title: title, message: message)
+            }
+        }
+        
     }
+    private func _showAlert(title:String, message:String) {
+        let alert = UIAlertController(title: title, message:  message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK",
+            style:.cancel,
+            handler:{(alert:UIAlertAction!) in
+                self.presentingViewController?.backPage()
+                print("gone back")}))
+
+        self.present(alert, animated: false)
+
+    }
+    /*
+     * Sets header of the scene
+     */
+    func setSceneHeader(titleText:String) {
+        guard let navbar = navigationController?.navigationBar else {return}
+        guard let window = (UIApplication.shared.windows.first) else {return}
+        guard let statusBar = window.windowScene?.statusBarManager else {return}
+        
+        //navbar.standardAppearance.doneButtonAppearance.tint
+        navbar.tintColor = .white
+        
+        let w = view.frame.width
+        let h = navbar.frame.height + statusBar.statusBarFrame.height
+        let barView = UIView(frame: CGRect(x:0, y:0,width:w,height: h))
+        navbar.addSubview(barView)
+        barView.backgroundColor   = UIConstants.COLOR_0
+        
+        let title = UILabel()
+        title.frame = CGRect(x:0, y:0, width:view.frame.width - 50 , height:barView.frame.height - 10)
+        title.text = titleText
+        title.textAlignment = .center
+        title.textColor = .white
+        title.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1)
+
+        let back = UIButton()
+        back.frame = CGRect(x:0, y:10, width:100 , height:24)
+        back.setTitle("<Back", for: .normal)
+        back.setTitleColor(.white, for: .normal)
+        
+        let settings = UIButton()
+        settings.frame = CGRect(x:w-30, y:10, width:24,height:24)
+        let image = UIImage(systemName: "text.justify")
+        settings.setImage(image, for: .normal)
+        
+        settings.addTarget(self,
+            action: #selector(openSettings), for: .touchUpInside)
+        
+        back.addTarget(self,
+            action: #selector(backPage), for: .touchUpInside)
+        
+        
+        barView.addSubview(back)
+        barView.addSubview(title)
+        barView.addSubview(settings)
+    }
+    
+    
+    @objc func openSettings() {
+        guard let url:URL = URL(string:UIApplication.openSettingsURLString) else {return}
+        print("app settings url \(url)")
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
+    @objc func backPage() {
+        self.navigationController?
+            .popViewController(animated: true)
+    }
+
 }
 
 extension UIImageView {
@@ -188,4 +278,27 @@ extension String.StringInterpolation {
         appendLiteral(INR+s)
     }
     
+}
+
+extension UIButton {
+    open override var intrinsicContentSize: CGSize {
+        return CGSize(width: 48, height: 12)
+    }
+}
+
+//extension UILabel {
+//    open override var intrinsicContentSize: CGSize {
+//        return CGSize(width: 100, height: 12)
+//    }
+//}
+
+extension UIStackView {
+
+    func addBackground(color: UIColor) {
+        let subview = UIView(frame: bounds)
+        subview.backgroundColor = color
+        subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(subview, at: 0)
+    }
+
 }

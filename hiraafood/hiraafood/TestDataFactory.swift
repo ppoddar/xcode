@@ -70,7 +70,8 @@ let addresses = [
  ]
 struct TestDataFactory {
     static func getMenu() -> Menu {
-        let menu:Menu = Menu(items: items)
+        let menu:Menu = Menu()
+        menu.items = items
         return menu
     }
     static func randomItem() -> Item {

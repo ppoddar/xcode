@@ -1,0 +1,23 @@
+{
+  "configurations" : [
+    {
+      "id" : "CC2FE4B5-B19F-4C10-9C04-B36460511327",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:hiraafood.xcodeproj",
+      "identifier" : "232D08E1249FC00100B84FC7",
+      "name" : "hiraafood"
+    }
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

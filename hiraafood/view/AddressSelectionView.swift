@@ -5,11 +5,10 @@ import UIKit
  * addresses and lets you create new addresses.
  * Address is rendered by AddressView
  */
-class AddressSelectionView: UIView {
-    var addressView:AddressView
+class AddressSelectionView: UIStackView {
+    var addressViews:Dictionary<String,AddressView>
     var selectedAddressIndex:Int
-    var nextAddress:NavigationButton
-    var prevAddress:NavigationButton
+    var navigationPanel:NavigationPanel
     var newAddress:UIButton
     var keyOrder:[String]
     var addresses:Dictionary<String,Address>
@@ -17,75 +16,71 @@ class AddressSelectionView: UIView {
      * create this view with array of given addresses
      */
     init(addresses:Dictionary<String,Address>) {
-        print("-------------- AddressSelection.init() addresses \(addresses)")
-        self.addresses   = addresses
-        self.addressView = AddressView()
+        NSLog("\(type(of:self)).init() with \(addresses)")
+        self.addresses = addresses
+        self.addressViews  = Dictionary<String,AddressView>()
+        for (key, value) in addresses {
+            let childView = AddressView(address: value)
+            addressViews[key] = childView
+        }
         self.selectedAddressIndex = 0
         self.keyOrder = addresses.keys.sorted()
-        self.nextAddress = NavigationButton(next:true)
-        self.prevAddress = NavigationButton(next:false)
+        self.navigationPanel = NavigationPanel()
         self.newAddress  = UIButton()
+        
         super.init(frame:.zero)
-        nextAddress.delegate = self
-        prevAddress.delegate = self
+        
+        navigationPanel.delegate = self
         self.newAddress.setTitle("new address", for: .normal)
+        self.newAddress.addTarget(self, action: #selector(openAddressDialog), for: .touchUpInside)
+        
+        self.isUserInteractionEnabled = true
         self.translatesAutoresizingMaskIntoConstraints = false
         self.autoresizingMask = []
+        self.backgroundColor = .white
         
-        newAddress.addTarget(self, action: #selector(openAddressDialog), for: .touchUpInside)
+        axis         = .vertical
+        distribution = .fill
+        alignment    = .fill
     
-        //self.view.frame = CGRect(x:0,y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
-   
-        print("init() AddressSelection.frame \(self.frame)")
+        let firstView = self.addressViews[keyOrder[0]]!
+        insertArrangedSubview(firstView, at: 0)
+        addArrangedSubview(navigationPanel)
+        addArrangedSubview(newAddress)
+            
+        navigationPanel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
+        newAddress.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
+        
+        NSLog("init() AddressSelection.frame \(self.frame)")
+        self.logViewHierarchy(view: self, num: 0)
     }
-     
-    required init?(coder: NSCoder) {
+    
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    func setupView() {
-        self.addressView.translatesAutoresizingMaskIntoConstraints = false
-        self.newAddress.translatesAutoresizingMaskIntoConstraints  = false
-        self.prevAddress.translatesAutoresizingMaskIntoConstraints = false
-        self.nextAddress.translatesAutoresizingMaskIntoConstraints = false
+    /*
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        print("============== \(type(of:self)) .hitTest ============ ")
+        print("point:\(point)")
+        if self.point(inside: point, with: event) {
+            print("point is inside. calling super")
+            return super.hitTest(point, with: event)
+        }
+        guard isUserInteractionEnabled, !isHidden, alpha > 0 else {
+            return nil
+        }
 
-        self.addSubview(addressView)
-        self.addSubview(nextAddress)
-        self.addSubview(prevAddress)
-        self.addSubview(newAddress)
-        
-        newAddress.backgroundColor = UIConstants.COLOR_2
-   
-        //print("viewWillLayoutSubviews. Computing frame")
-        let safeArea = self.safeAreaLayoutGuide
-        let margins  = self.layoutMarginsGuide
-        //print("within safeArea \(safeArea.layoutFrame)")
-        //print("with   margin \(margins.layoutFrame)")
-       
-        addressView.topAnchor.constraint(equalTo:  safeArea.topAnchor).isActive = true
-        addressView.leftAnchor.constraint(equalTo: safeArea.leftAnchor).isActive = true
-        //addressView.widthAnchor.constraint(equalTo: safeArea.widthAnchor).isActive = true
-        //addressView.heightAnchor.constraint(equalTo: safeArea.heightAnchor, constant: -50).isActive = true
-    
-        prevAddress.topAnchor.constraint(equalTo:  addressView.bottomAnchor).isActive = true
-        prevAddress.leftAnchor.constraint(equalTo: margins.leftAnchor).isActive = true
-        
-        nextAddress.topAnchor.constraint(equalTo: addressView.bottomAnchor).isActive = true
-        nextAddress.rightAnchor.constraint(equalTo: margins.rightAnchor).isActive = true
-
-        newAddress.topAnchor.constraint(equalTo:   nextAddress.bottomAnchor).isActive = true
-        newAddress.leftAnchor.constraint(equalTo:  addressView.leftAnchor).isActive = true
-        newAddress.rightAnchor.constraint(equalTo: addressView.rightAnchor).isActive = true
-    
-        showAddress()
-
+        for subview in subviews.reversed() {
+            let convertedPoint = subview.convert(point, from: self)
+            if let hitView = subview.hitTest(convertedPoint, with: event) {
+                return hitView
+            }
+        }
+        return nil
     }
-    
-        
-   
+    */
     @objc func openAddressDialog() {
-        
+        NSLog("======= new address =========")
     }
     /*
      * increments selected address index
@@ -108,10 +103,16 @@ class AddressSelectionView: UIView {
     /*
      * shows address at currently selected index
      */
-    private func showAddress() {
+    func showAddress() {
         let key = keyOrder[self.selectedAddressIndex]
-        //print("showing address [\(key)] at index \(selectedAddressIndex) of \(addresses.count)")
-        addressView.address = self.addresses[key]
+        NSLog("\(type(of:self)).showAddress [\(key)] at index \(selectedAddressIndex) of \(addresses.count)")
+        let exists = addressViews[key] != nil
+        let viewToRemove = arrangedSubviews[0]
+        let viewToReplace = addressViews[keyOrder[selectedAddressIndex]]!
+        self.removeArrangedSubview(viewToRemove)
+        viewToRemove.removeFromSuperview()
+        self.insertArrangedSubview(viewToReplace, at: 0)
+        setNeedsDisplay()
     }
    
     var selectedAddress:Address {
@@ -121,16 +122,30 @@ class AddressSelectionView: UIView {
     }
     
     
-//    override var intrinsicContentSize:CGSize {
-//        get {
-//            let width:CGFloat = addressView.intrinsicContentSize.width
-//            let height:CGFloat = addressView.intrinsicContentSize.height
-//                + nextAddress.intrinsicContentSize.height
-//                + 2*UIConstants.VGAP
-//
-//            return CGSize(width: width, height: height)
-//        }
-//    }
+    override var intrinsicContentSize:CGSize {
+        get {
+            let dynamicAddressView = self.arrangedSubviews[0]
+            let width:CGFloat  = dynamicAddressView.intrinsicContentSize.width
+            let height:CGFloat = dynamicAddressView.intrinsicContentSize.height
+                + navigationPanel.intrinsicContentSize.height
+                + newAddress.intrinsicContentSize.height
+
+            return CGSize(width: width, height: height)
+        }
+    }
+    
+    func logViewHierarchy(view: UIView, num: Int) {
+        var index = num
+        for _ in 0..<index {
+            print("\t", terminator: "")
+        }
+
+        index = index + 1
+        print("\(NSStringFromClass(type(of: view))) userInteractionEnabled: \(view.isUserInteractionEnabled)")
+        for subview in view.subviews {
+            self.logViewHierarchy(view: subview as! UIView, num: index)
+        }
+    }
 }
 
 /*
@@ -143,7 +158,11 @@ class NavigationButton :UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override var description: String {
+        get {
+            return "Navigation button \(up ? "+":"-")"
+        }
+    }
     init(next:Bool) {
         self.up = next
         super.init(frame: .zero)
@@ -152,24 +171,71 @@ class NavigationButton :UIButton {
         self.setTitle(text, for: [])
         self.setTitleColor(.black, for: .normal)
         self.setTitleColor(.gray,  for: .disabled)
-        
         self.addTarget(self,
             action: #selector(showAddress),
             for: .touchUpInside)
-        self.backgroundColor = .white
+        self.backgroundColor = .yellow
     }
     
     @objc
     func showAddress() {
+        NSLog(" \(type(of:self)) showAddress")
+            
         guard let c = delegate else {
             return
         }
         if (up) {
-            //print("Navigation button \(self.titleLabel?.text) calling showNext()")
+            NSLog("\(self) calling showNext()")
             c.showNext()
         } else {
-            //print("Navigation button \(self.titleLabel?.text) calling showPrev()")
+            NSLog("\(self) calling showPrev()")
             c.showPrev()
         }
     }
 }
+
+class NavigationPanel :UIStackView {
+    var nextButton:NavigationButton
+    var prevButton:NavigationButton
+    var delegate:AddressSelectionView? {
+        didSet {
+            nextButton.delegate = delegate
+            prevButton.delegate = delegate
+        }
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init() {
+        self.nextButton = NavigationButton(next: true)
+        self.prevButton = NavigationButton(next:false)
+        super.init(frame: .zero)
+        
+        axis = .horizontal
+        alignment = .top
+        distribution = .fill
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.isUserInteractionEnabled = true
+
+        addArrangedSubview(prevButton)
+        addArrangedSubview(nextButton)
+        
+        //prevButton.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        //nextButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+    }
+    
+    override var description: String {
+        get {
+            return "Navigation panel"
+        }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize (width: 200, height: 48)
+    }
+    
+   
+}
+

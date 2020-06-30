@@ -50,7 +50,7 @@ class KeyboardTextView: UITextView, UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-           print("textViewDidEndEditing")
+           NSLog("textViewDidEndEditing")
         //self.resignFirstResponder()
 
     }

@@ -41,7 +41,7 @@ class UIFactory {
         if (bold) {
             lbl.font = UIFont.boldSystemFont(ofSize: CGFloat(fontSize))
         }
-        //print("setting [\(text)] as label text")
+        //NSLog("setting [\(text)] as label text")
         lbl.text = text
         lbl.textAlignment = .left
         lbl.frame = CGRect(x:0, y:0, width:320, height:24)
@@ -150,7 +150,7 @@ extension UIViewController {
             style:.cancel,
             handler:{(alert:UIAlertAction!) in
                 self.presentingViewController?.backPage()
-                print("gone back")}))
+                NSLog("gone back")}))
 
         self.present(alert, animated: false)
 
@@ -204,7 +204,7 @@ extension UIViewController {
     
     @objc func openSettings() {
         guard let url:URL = URL(string:UIApplication.openSettingsURLString) else {return}
-        print("app settings url \(url)")
+        NSLog("app settings url \(url)")
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
@@ -217,19 +217,19 @@ extension UIViewController {
 
 extension UIImageView {
     func loadImage(imageURL:URL) -> Void {
-        //print("loading image from \(imageURL)")
+        //NSLog("loading image from \(imageURL)")
         DispatchQueue.global().async { [weak self] in
             guard let self = self else {
                 return
             }
-            //print("fetching image data from \(imageURL)")
+            //NSLog("fetching image data from \(imageURL)")
             guard let imageData = try? Data(contentsOf: imageURL) else {
                 return
             }
             
             DispatchQueue.main.async {
                 let image = UIImage(data: imageData)
-                //print("image size \(String(describing: image?.size))")
+                //NSLog("image size \(String(describing: image?.size))")
                 let w:CGFloat? = image?.size.width
                 let h:CGFloat? = image?.size.height
                 UIFactory.ITEM_ROW_HEIGHT = h!
@@ -281,7 +281,7 @@ extension String.StringInterpolation {
 
 extension UIButton {
     open override var intrinsicContentSize: CGSize {
-        return CGSize(width: 48, height: 12)
+        return CGSize(width: 48, height: 64)
     }
 }
 
@@ -291,3 +291,11 @@ extension UIButton {
 //    }
 //}
 
+extension UIStackView {
+    func setBackgroundColor(_ color: UIColor) {
+        let subView = UIView(frame: bounds)
+        subView.backgroundColor = color
+        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(subView, at: 0)
+    }
+}

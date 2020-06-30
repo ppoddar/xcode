@@ -13,7 +13,7 @@ class Cart : NSObject,ObservableObject,Codable {
      * If new item is added, sends notification
      */
     func setItem(item:Item, units:Int, comment:String) {
-        print("Cart.setItem \(units) units of sku=\(item.sku)")
+        NSLog("Cart.setItem \(units) units of sku=\(item.sku)")
         notify()
         guard var existing:OrderItem = self.items[item.sku] else {
             let orderitem = OrderItem(

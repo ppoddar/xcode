@@ -16,7 +16,7 @@ class OrderItemController: UIViewController {
     var comment:KeyboardTextView = UIFactory.textView(placeHolderText: "any instructions for the chef?")
     
     init(item:Item,  cart:Cart) {
-        print("created OrderItemController with \(item)")
+        NSLog("created OrderItemController with \(item)")
         self.item = item
         self.cart = cart
         self.itemView = ItemView()
@@ -49,15 +49,15 @@ class OrderItemController: UIViewController {
     }
     
     @objc func keyboardWillShow(notification:NSNotification) {
-        print("keyboad will show")
+        NSLog("keyboad will show")
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
-        print("keyboard size \(keyboardSize)")
-        print("view origin \(self.view.frame.origin.y)")
+        NSLog("keyboard size \(keyboardSize)")
+        NSLog("view origin \(self.view.frame.origin.y)")
         self.view.frame.origin.y -= keyboardSize.height
-        print("adjusted to \(self.view.frame.origin.y)")
+        NSLog("adjusted to \(self.view.frame.origin.y)")
     }
     
     @objc func keyboardWillHide(notification:NSNotification) {

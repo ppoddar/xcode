@@ -41,19 +41,19 @@ class DeliveryController: UIViewController {
     }
 
     override func viewDidLoad() {
-        print("======== viewDidLoad =========")
+        NSLog("======== viewDidLoad =========")
         super.viewDidLoad()
         self.view.backgroundColor = .white
 
-        print("self.view frame \(self.view.frame)")
-        print("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
+        NSLog("self.view frame \(self.view.frame)")
+        NSLog("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
 
     }
     
     override func loadView() {
-        print("======== loadView =========")
+        NSLog("======== loadView =========")
         super.loadView()
-        print("loadView().adding arranged subviews")
+        NSLog("loadView().adding arranged subviews")
         content.addArrangedSubview(orderView.view)
         content.addArrangedSubview(selectAddressLabel)
         content.addArrangedSubview(addressSelector)
@@ -67,21 +67,21 @@ class DeliveryController: UIViewController {
         paymentButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
     
         //self.view.frame = CGRect(x:0,y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        print("self.view frame \(self.view.frame)")
-        print("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
+        NSLog("self.view frame \(self.view.frame)")
+        NSLog("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
 
     }
     
     override func viewWillLayoutSubviews() {
         if (layoutComplete) {return}
         super.viewWillLayoutSubviews()
-        print("======== viewWillLayoutSubviews =========")
-        print("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
-        print("self.view frame \(self.view.frame)")
-        print("self.view bounds \(self.view.bounds)")
-        print("viewWillLayoutSubviews().setting contraints")
+        NSLog("======== viewWillLayoutSubviews =========")
+        NSLog("self.view= \(Unmanaged.passUnretained(self.view).toOpaque())")
+        NSLog("self.view frame \(self.view.frame)")
+        NSLog("self.view bounds \(self.view.bounds)")
+        NSLog("viewWillLayoutSubviews().setting contraints")
         let safeArea = self.view.safeAreaLayoutGuide
-        print("safe area frame \(safeArea.layoutFrame)")
+        NSLog("safe area frame \(safeArea.layoutFrame)")
         self.view.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         let margins = self.view.layoutMarginsGuide
         
@@ -129,7 +129,7 @@ class DeliveryController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("======== viewDidLayoutSubviews =========")
+        NSLog("======== viewDidLayoutSubviews =========")
         orderView.reloadInputViews()
         addressSelector.reloadInputViews()
     }

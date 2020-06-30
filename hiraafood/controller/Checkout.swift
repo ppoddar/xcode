@@ -49,7 +49,7 @@ class CheckoutViewController: UIViewController {
     
     
     @objc func createOrder() {
-        print("----------- createOrder ------------ ")
+        NSLog("----------- createOrder ------------ ")
         let url:String = "/order/?uid=tester"
         let payload:Data? = JSONHelper().jsonFromDict(type:OrderItem.self, dict:cartView.cart.items)
         Server.singleton.post(
@@ -60,10 +60,10 @@ class CheckoutViewController: UIViewController {
             case .success:
                 do {
                     let json:String = try String(data:result.get(), encoding:.utf8)!
-                    print("--------- resposne POST /order/?uid=tester-------")
-                    print(json)
+                    NSLog("--------- resposne POST /order/?uid=tester-------")
+                    NSLog(json)
                     let order:Order = try JSONDecoder().decode(Order.self, from: json.data(using: .utf8)!)
-                    print("received create order response \(order)")
+                    NSLog("received create order response \(order)")
                     Server.singleton.get(url: "/user/addresses/?uid=tester") { result in
                         do {
                             switch(result) {

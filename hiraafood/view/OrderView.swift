@@ -61,7 +61,7 @@ class OrderView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("OrderView.viewDidAppear() ")
+        NSLog("OrderView.viewDidAppear() ")
         guard let table = self.view as? SizedTableView
             else {return}
         table.reloadData()
@@ -80,7 +80,7 @@ class OrderView: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: CartView.cellIdentifer) as? OrderItemView
         guard let c = cell else {return empty}
         if indexPath.row == order.items.count {
-            print("=======> getting item cell for total \(indexPath)")
+            NSLog("=======> getting item cell for total \(indexPath)")
             c.total = order.total
         } else {
             let item = order.items[indexPath.row]

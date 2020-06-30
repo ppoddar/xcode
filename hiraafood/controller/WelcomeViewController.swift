@@ -28,7 +28,7 @@ class WelcomeViewController: BaseViewController {
     }
     
     @objc func enterMain() throws {
-        print("============ Starting main application ============")
+        NSLog("============ Starting main application ============")
         
         let menu = TestDataFactory.getMenu()
         let page = OrderPageController()
@@ -42,13 +42,13 @@ class WelcomeViewController: BaseViewController {
         
         Server.singleton.get(
             url:  "/item/catalog") {result in
-                print("received response from /item/catlog")
+                NSLog("received response from /item/catlog")
             switch (result) {
             case .success:
                 do {
                     let rawData = try result.get()
                     let items:[Item] = try JSONDecoder().decode([Item].self, from: rawData)
-                    print("decoded response to \(items.count) items")
+                    NSLog("decoded response to \(items.count) items")
                     DispatchQueue.main.async {
                             let menu:Menu = Menu()
                             menu.items = items

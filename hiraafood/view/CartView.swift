@@ -47,7 +47,7 @@ class CartView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        print("CartView.viewWillAppear() ")
+        NSLog("CartView.viewWillAppear() ")
         guard let table = self.view as? UITableView
             else {return}
         table.reloadData()
@@ -73,7 +73,7 @@ class CartView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let empty = OrderItemView()
-        print("getting item cell for \(indexPath)")
+        NSLog("getting item cell for \(indexPath)")
         let cell = tableView.dequeueReusableCell(withIdentifier: CartView.cellIdentifer) as? OrderItemView
         guard let c = cell else {return empty}
         let item = cart.items[indexPath.row]

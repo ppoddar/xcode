@@ -37,7 +37,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.view = UITableView(frame: .zero, style: .grouped)
 
         hidden_sections = MenuView.initHiddenSection(sectionCount: menu.category_names.count, style: MenuView.HiddenSection.hiddenAllButFirst)
-        print("Hidden section \(hidden_sections)")
+        NSLog("Hidden section \(hidden_sections)")
         
         guard let table = self.view as? UITableView
             else {return}
@@ -63,7 +63,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
         
     override func viewWillAppear(_ animated: Bool) {
-        print("MenuViewController.viewWillAppear() ")
+        NSLog("MenuViewController.viewWillAppear() ")
         guard let table = self.view as? UITableView
             else {return}
         table.reloadData()
@@ -110,17 +110,17 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (isHidden(section)) {
-            print("section \(section) is hidden. NUmber of rows = 0")
+            NSLog("section \(section) is hidden. NUmber of rows = 0")
             return 0
         }
         let category = menu.category_names[section]
         guard let items = menu.categorized_items[category] else {return 0}
-        print("section \(section) number of rows = \(items.count)")
+        NSLog("section \(section) number of rows = \(items.count)")
         return items.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let empty = ItemCell()
-        print("getting item cell for \(indexPath)")
+        NSLog("getting item cell for \(indexPath)")
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuView.cellIdentifer) as? ItemCell
         guard let c = cell else {return empty}
         let category = menu.category_names[indexPath.section]
@@ -146,11 +146,11 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if (isHidden(indexPath.section)) {
-            print("height of row at \(indexPath) because section is hiiden")
+            NSLog("height of row at \(indexPath) because section is hiiden")
             return 0
         }
         let h:CGFloat = UIConstants.ROW_HEIGHT
-        //print("height of row at \(indexPath) \(h)")
+        //NSLog("height of row at \(indexPath) \(h)")
         return h
         
     }
@@ -173,7 +173,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
      *
      */
     @objc func toggleSection(section:Int) {
-        //print("------------- YAHOO \(section) ------------------ ")
+        //NSLog("------------- YAHOO \(section) ------------------ ")
         guard let table = self.view as? UITableView
             else {return}
         
@@ -191,10 +191,10 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     func hideSection(_ section:Int) {
-        print("hide section \(section)")
+        NSLog("hide section \(section)")
 
         if (isHidden(section)) {
-            //print("section \(section) is already hidden. returning")
+            //NSLog("section \(section) is already hidden. returning")
             return
             
         }
@@ -207,20 +207,20 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
         table.deleteRows(at: paths, with: .fade)
         // hiding this section so that menu after
         // return correct number of rows for a section
-        //print("insert \(section) on hidden_sections")
+        //NSLog("insert \(section) on hidden_sections")
         self.hidden_sections.insert(section)
     }
     func showSection(_ section:Int) {
-        print("show section \(section)")
+        NSLog("show section \(section)")
         if (!isHidden(section)) {
-            //print("section \(section) is already visible. returning")
+            //NSLog("section \(section) is already visible. returning")
             return
         }
        guard let table = self.view as? UITableView
            else {return}
             // adding this section before so that menu wiil
         // return correct number of rows for a section
-        print("remove \(section) on hidden_sections")
+        NSLog("remove \(section) on hidden_sections")
         self.hidden_sections.remove(section)
         let N:Int = self.tableView(table, numberOfRowsInSection: section)
         let paths:[IndexPath] = self.sectionPaths(section, count: N)
@@ -261,12 +261,12 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
      func tableView(_ tableView: UITableView,
             viewForHeaderInSection section: Int) -> UIView? {
         
-        print("===================================")
-        print("viewForHeaderInSection \(section)")
+        NSLog("===================================")
+        NSLog("viewForHeaderInSection \(section)")
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: MenuView.sectionIdentifer)
             as? SectionHeaderView
             else {
-                print("*** reusable section not found for \(section)")
+                NSLog("*** reusable section not found for \(section)")
                 return SectionHeaderView()
             }
         header.section = section
@@ -289,7 +289,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
      */
     func tableView(_ tableView: UITableView,
             didSelectRowAt indexPath: IndexPath) {
-        print("=========> seleceted item at \(indexPath)")
+        NSLog("=========> seleceted item at \(indexPath)")
         let category:String = menu.category_names[indexPath.section]
         let items:[Item]? = menu.categorized_items[category]
         guard let item:Item = items?[indexPath.row] else {
@@ -300,7 +300,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func openSelectedItem(_ item:Item) {
         
-        //print("item \(String(describing: dump(item)))")
+        //NSLog("item \(String(describing: dump(item)))")
         //tableView.deselectRow(at: indexPath, animated: true)
         let orderItemController = OrderItemController(item:item, cart:cart)
         //show(orderItemController, sender:self)

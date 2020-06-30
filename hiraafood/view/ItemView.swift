@@ -17,7 +17,7 @@ public class ItemView: UIView {
     // Once model Item instance is set, the view can be set
     var item:Item? {
         didSet {
-            print("ItemView set item \(String(describing: item))")
+            NSLog("ItemView set item \(String(describing: item))")
             guard let i = item else {return}
             
             let name:UILabel = UIFactory.label(i.name)
@@ -33,7 +33,7 @@ public class ItemView: UIView {
             let rating = Rating(i.rating)
             let price = UIFactory.label(UIFactory.amount(i.price))
             
-            //print("=========> adding subviews")
+            //NSLog("=========> adding subviews")
 
             self.addSubview(name)
             self.addSubview(description)
@@ -70,7 +70,7 @@ public class ItemView: UIView {
             let h1 = image.size.height + 4*UIConstants.LINE_HEIGHT
             let h2 = CGFloat(numberOfLines+2)*UIConstants.LINE_HEIGHT
             self.computedHeight = max(h1,h2)
-            print("ItemView computed height \(computedHeight)")
+            NSLog("ItemView computed height \(computedHeight)")
             UIFactory.border(self)
         }
         
@@ -78,7 +78,7 @@ public class ItemView: UIView {
     
     public override var intrinsicContentSize: CGSize {
         get {
-            print("========> getting intrinsicContentSize")
+            NSLog("========> getting intrinsicContentSize")
             return self.sizeThatFits(.zero)
         }
     }

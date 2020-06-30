@@ -34,7 +34,7 @@ class CollapsibleButton :UIButton {
     }
     
     @objc func toggleSection() {
-        print("********** YAHOO *********** toggle \(section)")
+        NSLog("********** YAHOO *********** toggle \(section)")
         self.owner.toggleSection(section: self.section)
         setCurrentTitle()
     }
@@ -44,7 +44,7 @@ class CollapsibleButton :UIButton {
         ? CollapsibleButton.HIDDEN
         : CollapsibleButton.SHOWN
         
-        //print("set collapsible button title for section \(section) to title \(title) ")
+        NSLog("set collapsible button title for section \(section) to title \(title) ")
 
         self.setTitle(title, for:.normal)
     }

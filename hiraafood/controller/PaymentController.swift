@@ -81,7 +81,7 @@ class PaymentController: BaseViewController {
                 "color": "#F37254"
             ]
         ]
-        print("Razor pay options \(options)")
+        NSLog("Razor pay options \(options)")
         //razorpay.open(options)
     }
 

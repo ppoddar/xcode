@@ -35,10 +35,10 @@ class OrderItemView: UITableViewCell {
     
     func setupView(_ item:OrderItem?) {
         guard let i = item else {
-            print("\(self.self).setupView not setting for nul item")
+            NSLog("\(self.self).setupView not setting for nul item")
             return
         }
-        //print("OrderItemView.setupView with item \(String(describing: item))")
+        //NSLog("OrderItemView.setupView with item \(String(describing: item))")
         var title = i.name
         if i.units > 1 {
             title +=  " (\(i.units))"

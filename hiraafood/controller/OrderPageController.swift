@@ -35,7 +35,7 @@ class OrderPageController: UIViewController {
         setSceneHeader(titleText: UIConstants.APP_NAME)
         
         guard let menu = menu else {
-            print("WARN: no menu set before OrderPageController.viewDidLoad()")
+            NSLog("WARN: no menu set before OrderPageController.viewDidLoad()")
             return
         }
         self.menuView = MenuView(menu: menu, cart:cart)
@@ -76,17 +76,17 @@ class OrderPageController: UIViewController {
      * view has been set
      */
     override func viewWillLayoutSubviews() {
-        print("---------> viewWillLayoutSubviews --- view bounds are set now")
-        print("view bounds \(self.view.bounds)")
+        NSLog("---------> viewWillLayoutSubviews --- view bounds are set now")
+        NSLog("view bounds \(self.view.bounds)")
         let safeArea = self.view.safeAreaLayoutGuide
-        print("safeArea \(safeArea.layoutFrame)")
+        NSLog("safeArea \(safeArea.layoutFrame)")
         self.view.layoutMargins = UIEdgeInsets(top: safeArea.layoutFrame.origin.y,
                                                left: safeArea.layoutFrame.origin.x,
                                                bottom: safeArea.layoutFrame.height,
                                                right: safeArea.layoutFrame.width)
         
         let margins = self.view.layoutMarginsGuide
-        print("margins \(margins.layoutFrame)")
+        NSLog("margins \(margins.layoutFrame)")
         
         menuView?.view.bounds = CGRect(x: margins.layoutFrame.origin.x,
                                        y: margins.layoutFrame.origin.y,
@@ -124,7 +124,7 @@ class OrderPageController: UIViewController {
 //        
 //    }
     @objc func itemInsertedInCart(_ notification:Notification) {
-        print("MenuViewControoler receievd notifictaion \(notification)")
+        NSLog("MenuViewControoler receievd notifictaion \(notification)")
         checkout.isEnabled = true
         //cartView.reloadData()
     }
@@ -153,7 +153,7 @@ extension Notification.Name {
  */
 /*/
  override func viewDidLayoutSubviews() {
- print("OrderPageController.viewDidLayoutSubviews")
+ NSLog("OrderPageController.viewDidLayoutSubviews")
  guard let menu = menuView.view else { return}
  guard let cart = cartView.view else { return}
  
@@ -180,8 +180,8 @@ extension Notification.Name {
  checkout.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
  checkout.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
  
- print("menu frame \(menu.frame)")
- print("cart frame \(cart.frame)")
+ NSLog("menu frame \(menu.frame)")
+ NSLog("cart frame \(cart.frame)")
  }
  */
 

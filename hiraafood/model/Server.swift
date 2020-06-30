@@ -12,6 +12,7 @@ enum ApplicationError: Error {
     case ArrayIndexOfBounds
     case unexpeceted
     case BadPayload
+    case ConnectionError
 
 }
 
@@ -48,16 +49,22 @@ class Server {
      *
      */
     func get(url:String,
-             completion:@escaping (Result<Data,ApplicationError>) -> Void) {
+             completion:@escaping (Result<Data,Error>) -> Void) {
         let url = Server.newURL(url)
         let task = session.dataTask(with: url){data,response, error in
+            if (error != nil) {
+                NSLog("error = \(String(describing: error))")
+                completion(.failure(error!))
+                return
+            }
             guard let jsonData = data else {
-                completion(.failure(.ResponseNotJSON(body:data)))
+                completion(.failure(ApplicationError.ResponseNotJSON(body:data)))
                 return
             }
             completion(.success(jsonData))
         }
         task.resume()
+        
     }
     
     
@@ -67,7 +74,7 @@ class Server {
     
     func fetchImage(name:String) -> Result<Data, ApplicationError> {
         let path:URL = Server.newURL(name)
-        print("fetching image \(path) over network")
+        NSLog("fetching image \(path) over network")
         
         var result: Result<Data, ApplicationError>!
         let task = URLSession.shared.dataTask(with: path){(data, _, _) in
@@ -93,12 +100,12 @@ class Server {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        print("----------- Server POST request \(requestURL)")
-        print(payload)
+        NSLog("----------- Server POST request \(requestURL)")
+        NSLog(String(describing: payload))
         do {
             //request.httpBody = encodeDictionary(payload).data(using:.utf8)
             request.httpBody = payload
-            print("sending POST \(requestURL) with \(String(describing: request.httpBody))")
+            NSLog("sending POST \(requestURL) with \(String(describing: request.httpBody))")
             let task = session.dataTask(with: request,
                completionHandler:{data, response, error in
                guard let jsonData = data else {
@@ -119,7 +126,7 @@ class Server {
     static let COLON:String = ":"
 
     func encodeDictionary<T:Encodable>(_ dict:Dictionary<String,T>) -> String {
-        print("converting dictionary to JSON String")
+        NSLog("converting dictionary to JSON String")
         let N = dict.count
         var keys:[String] = [String](repeating: "", count: N)
         var values:[String] = [String](repeating: "", count: N)
@@ -127,8 +134,8 @@ class Server {
         for (key,value) in dict {
             keys[i] = key
             values[i] = toJSONString(value)
-            print("key \(key)")
-            print(values[i])
+            NSLog("key \(key)")
+            NSLog(values[i])
             i += 1
         }
         var json:String = Server.OPEN
@@ -137,13 +144,13 @@ class Server {
             if (i < (N-1)) {json += ","}
         }
         json += Server.CLOSE
-        print("final JSON")
-        print(json)
+        NSLog("final JSON")
+        NSLog(json)
         return json
     }
     
     func toJSONString<T:Encodable>(_ obj:T) -> String {
-        print("converting object \(obj) to JSON String")
+        NSLog("converting object \(obj) to JSON String")
         let encoder = JSONEncoder()
         //encoder.outputFormatting = .prettyPrinted
         do {
@@ -151,7 +158,7 @@ class Server {
             let json = String(data: data, encoding: .utf8)!
             return json
         } catch {
-            print(error)
+            NSLog(String(describing: error))
         }
         return ""
     }

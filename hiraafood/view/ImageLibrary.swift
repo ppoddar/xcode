@@ -33,30 +33,30 @@ class ImageLibrary {
         let exists:Bool = ImageLibrary.cache[key] != nil
         var image:UIImage?
         if (exists) {
-            print("image with key [\(key)] is cached")
+            NSLog("image with key [\(key)] is cached")
             image = ImageLibrary.cache[key]!
         } else {
-            print("loading image from server with key [\(key)] ")
+            NSLog("loading image from server with key [\(key)] ")
             let imageURL = Server.newURL(key)
             let imageDataLoaded = DispatchSemaphore(value: 0)
             DispatchQueue.global().async { 
                do {
                     let imageData = try Data(contentsOf: imageURL)
-                    print("loaded image data \(imageData)")
-                    print("creating image from data \(imageData)")
+                    NSLog("loaded image data \(imageData)")
+                    NSLog("creating image from data \(imageData)")
                     image = UIImage(data: imageData)
                     ImageLibrary.cache[key] = image
-                    //print("created image. releasing imageCreated semaphore")
+                    //NSLog("created image. releasing imageCreated semaphore")
                     imageDataLoaded.signal()
                 } catch {
-                    print(error)
+                    NSLog(String(describing: error))
                     imageDataLoaded.signal()
                 }
             } // async
-            //print("waiting on imageDataLoaded semaphore...")
+            //NSLog("waiting on imageDataLoaded semaphore...")
             imageDataLoaded.wait()
         } // else
-        //print("returning image")
+        //NSLog("returning image")
         guard let i = image else {
             return ImageLibrary.NO_IMAGE}
         return i

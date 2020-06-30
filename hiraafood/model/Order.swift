@@ -29,7 +29,7 @@ struct Order: Codable {
     }
     
     mutating func decode(from decoder:Decoder) throws {
-        print("decoding Order")
+        NSLog("decoding Order")
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id  = try container.decode(String.self, forKey: .id)
         self.created = try container.decode(String.self, forKey: .created)
@@ -42,7 +42,7 @@ struct Order: Codable {
                 let item = try JSONDecoder().decode(OrderItem.self, from:value)
                 items.setValue(key: key, value: item)
             } catch {
-                print(error)
+                NSLog(String(describing: error))
             }
         }
     }

@@ -13,27 +13,27 @@ class JSONHelper {
      */
     func jsonFromObject<V:Codable>(type:Codable.Type,  obj:V) ->  Data? {
         do {
-            print("jsonFromObject \(obj)")
+            NSLog("jsonFromObject \(obj)")
             return try JSONEncoder().encode(obj)
             
             //return try JSONSerialization.data(withJSONObject: obj, options: [])
         } catch  {
-            print("***ERROR: jsonFromObject \(obj)")
+            NSLog("***ERROR: jsonFromObject \(obj)")
 
-            print(error)
+            NSLog(String(describing: error))
             return nil
         }
     }
     
     func jsonFromDict<V:Codable>(type:Codable.Type, dict:IndexedDictionary<V>) -> Data? {
         let N = dict.count
-         print("converting dictionary of size \(N) to JSON String")
+         NSLog("converting dictionary of size \(N) to JSON String")
          var values:[String] = [String](repeating: "", count: N)
         var i:Int = 0
          for key in dict.keys {
              let value:V = dict[key]!
-             print("key= \(key)")
-             print("value= \(value)")
+             NSLog("key= \(key)")
+             NSLog("value= \(value)")
             let data:Data = jsonFromObject(type: V.self, obj: value)!
              values[i] = String(data:data, encoding: .utf8)!
              i += 1
@@ -44,8 +44,8 @@ class JSONHelper {
                  if (i < (N-1)) {json += ","}
              }
              json += Server.CLOSE
-             print("final JSON")
-             print(json)
+             NSLog("final JSON")
+             NSLog(json)
             return json.data(using: .utf8)
          }
         

@@ -37,11 +37,11 @@ class SectionHeaderView : UITableViewHeaderFooterView {
     
     func configure(text:String) {
         
-        print("SectionHeaderView.configure() \(text)")
+        NSLog("SectionHeaderView.configure() \(text)")
         textLabel?.text = text
         textLabel?.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption2)
 //        guard let label = contentView as? UITableViewHeaderFooterContentView else {
-//            print("** content view is not a label but of type \(type(of:contentView))")
+//            NSLog("** content view is not a label but of type \(type(of:contentView))")
 //            return
 //        }
 //        label.text = text
@@ -52,14 +52,14 @@ class SectionHeaderView : UITableViewHeaderFooterView {
     
     @objc func toggleSection() {
         if (menuView == nil) {
-            print("** can not toggle section, because no controoler is set")
+            NSLog("** can not toggle section, because no controoler is set")
         }
         menuView?.toggleSection(section: section)
     }
 }
 /*
  @objc func singleTap(tapGestureRecognizer: UITapGestureRecognizer) {
- print("========= Y A H O O =========")
+ NSLog("========= Y A H O O =========")
  
  guard let table = superview as? UITableView else {return}
  
@@ -73,7 +73,7 @@ class SectionHeaderView : UITableViewHeaderFooterView {
  return
  }
  if k.frame.contains(loc) {
- print("tapped \(k) section")
+ NSLog("tapped \(k) section")
  do {
  // header was tapped
  self.toggleSection(section: i)

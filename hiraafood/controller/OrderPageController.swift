@@ -5,10 +5,11 @@ import UIKit
 class OrderPageController: UIViewController {
     var menuView:MenuView?
     var checkout:UIButton
-    var menu:Menu?
+    var menu:Menu
     var cart:Cart
     
-    init() {
+    init(menu:Menu) {
+        self.menu = menu
         checkout = UIButton()
         checkout.translatesAutoresizingMaskIntoConstraints = false
         checkout.frame = CGRect(x: 200, y: 200, width: 100, height: 100)
@@ -34,10 +35,6 @@ class OrderPageController: UIViewController {
         super.viewDidLoad()
         setSceneHeader(titleText: UIConstants.APP_NAME)
         
-        guard let menu = menu else {
-            NSLog("WARN: no menu set before OrderPageController.viewDidLoad()")
-            return
-        }
         self.menuView = MenuView(menu: menu, cart:cart)
         self.addViewController(menuView!)
         self.view.addSubview(checkout)
@@ -130,7 +127,7 @@ class OrderPageController: UIViewController {
     }
     
     @objc func createOrder() {
-        if (self.cart.items.count == 0) {
+        if (self.cart.isEmpty) {
             alert(title: "", message: "empty cart")
         }
         let checkout:CheckoutViewController = CheckoutViewController(cart:cart)
@@ -139,7 +136,7 @@ class OrderPageController: UIViewController {
     }
     
     func refresh() {
-        checkout.isEnabled = cart.items.count > 0
+        checkout.isEnabled = !self.cart.isEmpty
     }
 }
 

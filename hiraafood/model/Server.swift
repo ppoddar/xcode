@@ -93,7 +93,7 @@ class Server {
      */
     func post(url:String,
               payload:Data?,
-              completion:@escaping (Result<Data,ApplicationError>) -> Void) {
+              completion:@escaping (Result<Data,Error>) -> Void) {
         let requestURL = Server.newURL(url)
         var request:URLRequest = URLRequest(url:requestURL)
         request.httpMethod = "POST"
@@ -109,15 +109,13 @@ class Server {
             let task = session.dataTask(with: request,
                completionHandler:{data, response, error in
                guard let jsonData = data else {
-                    completion(.failure(.ResponseNotJSON(body:data)))
+                    completion(.failure(ApplicationError.ResponseNotJSON(body:data)))
                     return
                 }
                 completion(.success(jsonData))
             })
             task.resume()
-        } catch {
-            completion(.failure(.BadPayload))
-        }
+        } 
     }
     
     static let OPEN:String = "{"

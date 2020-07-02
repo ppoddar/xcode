@@ -10,7 +10,6 @@ import UIKit
 //import SwiftyJSON
 
 class CheckoutViewController: UIViewController {
-    
     var cartView:CartView
     var checkout:UIButton
     var back:UIButton
@@ -47,11 +46,10 @@ class CheckoutViewController: UIViewController {
         back.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     }
     
-    
     @objc func createOrder() {
         NSLog("----------- createOrder ------------ ")
         let url:String = "/order/?uid=tester"
-        let payload:Data? = JSONHelper().jsonFromDict(type:OrderItem.self, dict:cartView.cart.items)
+        let payload:Data? = cartView.modelObj.payload
         Server.singleton.post(
             url:url,
             // payload must be Array or Dictionary

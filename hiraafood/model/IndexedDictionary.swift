@@ -7,29 +7,17 @@
 //
 
 import Foundation
-struct IndexedDictionary<V:Codable> : Codable  {
-    private var delegate = Dictionary<String,V> ()
+struct IndexedDictionary<V:Codable & HasKeyProtcol> : Codable  {
+    
+    var delegate = Dictionary<String,V> ()
+    
     var keyOrder:Array<String> = Array<String>()
-    subscript (index:Int) -> V? {
-        get {
-            let key:String = keyOrder[index]
-            return delegate[key]
-        }
+    
+    enum CodingKeys : CodingKey {
     }
     
-    
-    subscript (key:String) -> V? {
-        get {
-            return delegate[key]
-        }
-    }
-    
-      enum CodingKeys : CodingKey {
-       }
-    
-    mutating func setValue(key:String, value:V) {
-        keyOrder.append(key)
-        delegate[key] = value
+    func makeIterator() -> Dictionary<String,V>.Iterator {
+        return delegate.makeIterator()
     }
     
     var count:Int {
@@ -38,15 +26,37 @@ struct IndexedDictionary<V:Codable> : Codable  {
         }
     }
     
+    
+    
+    subscript (index:Int) -> V? {
+        get {
+            return delegate[keyOrder[index]]
+        }
+    }
+    
+    subscript (key:String) -> V? {
+        get {
+            return delegate[key]
+        }
+    }
+    
+    mutating func addElement(_ e:V) {
+        let key:String = e.key
+        keyOrder.append(key)
+        delegate[key] = e
+    }
+    
+    var orderedValues:[V] { get {
+        return Array(delegate.values)
+    }}
+    
+    var keys:[String] { get {
+        return keyOrder
+        }}
     func unwrap() -> Dictionary<String,V> {
         return delegate
     }
     
-    var keys:[String] {
-        get {
-            return keyOrder
-        }
-    }
     
     
     

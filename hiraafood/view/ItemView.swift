@@ -31,7 +31,7 @@ public class ItemView: UIView {
             let itemImage  = UIImageView(image: image)
             itemImage.translatesAutoresizingMaskIntoConstraints = false
             let rating = Rating(i.rating)
-            let price = UIFactory.label(UIFactory.amount(i.price))
+            let price = UIFactory.label(UIFactory.amount(value: i.price))
             
             //NSLog("=========> adding subviews")
 

@@ -1,6 +1,8 @@
 import UIKit
 
 class WelcomeViewController: BaseViewController {
+    let server:ServerProtocol = MockServer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setSceneHeader(titleText: "Welcome")
@@ -30,8 +32,8 @@ class WelcomeViewController: BaseViewController {
     @objc func enterMain() throws {
         NSLog("============ Starting main application ============")
         
-        let menu = TestDataFactory.getMenu()
-        let page = OrderPageController()
+        let menu = server.getMenu()
+        let page = OrderPageController(menu: menu)
         page.menu = menu
         show(page, sender: self)
         //self.modalPresentationStyle = .fullScreen

@@ -22,11 +22,13 @@ class TestViewController: UIViewController {
         case .welcome:
             main = WelcomeViewController()
         case .order:
-            main = OrderPageController()
+            main = OrderPageController(menu: TestDataFactory.getMenu())
         case .checkout:
             main = CheckoutViewController(cart: TestDataFactory.getCart())
         case .payment:
-            main = PaymentController(oid:"1234",
+            let order:Order = TestDataFactory.getOrder();
+            let bill:Invoice = TestDataFactory.getInvoice(order: order)
+            main = PaymentController(invoice: bill,
                                      billingAddress: TestDataFactory.getAddress(key: "billing"),
                                      deliveryAddress: TestDataFactory.getAddress(key: "delivery"))
         case .delivery:

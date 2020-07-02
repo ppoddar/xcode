@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        weak var semaphore:DispatchSemaphore? = DispatchSemaphore(value: 1)
+       weak var semaphore:DispatchSemaphore? = DispatchSemaphore(value: 1)
         var errorOcuured:Error?
         Server.singleton.get(url: "/connect") {
             result in
@@ -39,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = UIWindow(windowScene: windowScene)
             let navbar = UINavigationController()
             //let main = WelcomeViewController()
-            let main = TestDataFactory.viewController(.address)
+            let main = TestDataFactory.viewController(.delivery)
             NSLog("Showing \(type(of:main)) ")
             navbar.viewControllers = [main]
             self.window?.rootViewController = navbar

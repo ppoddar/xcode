@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 struct UIConstants {
+    static var APP_NAME:String = "Hiraafood"
     static var TOP_MARGIN:CGFloat    = CGFloat(20)
     static var LEFT_MARGIN:CGFloat   = CGFloat(20)
     static var RIGHT_MARGIN:CGFloat  = CGFloat(80)
@@ -24,4 +25,12 @@ struct UIConstants {
     
     static var BUTTON_WIDTH:CGFloat = CGFloat(200)
     static var BUTTON_HEIGHT:CGFloat = CGFloat(12)
+    
+    static var COLOR_0 = UIColor.blue
+    static var COLOR_1 = UIColor.green
+    static var COLOR_2 = UIColor.yellow
+    static var COLOR_3 = UIColor.red
+
 }
+
+

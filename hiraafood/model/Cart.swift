@@ -3,39 +3,47 @@ import Foundation
  * Set of OrderItem indexed by item sku
  * The keys are ordered by order of insertion
  */
-class Cart : NSObject,ObservableObject,Codable {
-    
-    var items = IndexedDictionary<OrderItem>()
-    
-    /*
-     * adds given item to cart
-     * If item sku exists, then existing item is replaced
-     * If new item is added, sends notification
-     */
-    func setItem(item:Item, units:Int, comment:String) {
-        NSLog("Cart.setItem \(units) units of sku=\(item.sku)")
+class Cart: BaseTabular<OrderItem>, Codable {
+    func addItem(item:Item, units:Int, comment:String) {
         notify()
-        guard var existing:OrderItem = self.items[item.sku] else {
-            let orderitem = OrderItem(
-                sku: item.sku,
-                name:item.name,
+        let existing = self[item.sku]
+        var itemToAdd:OrderItem
+        let price:Double = item.price * Double(units)
+        if existing == nil {
+            itemToAdd = OrderItem(sku: item.sku, name: item.name,
                 units: units,
-                comment: comment,
-                price: Double(units)*item.price)
-            self.items.setValue(key:item.sku, value: orderitem)
-            return
+                price: price)
+        } else {
+            itemToAdd = existing!
+            itemToAdd.price   = price
+            itemToAdd.units   = units
+            itemToAdd.comment = comment
         }
-        existing.units   = units
-        existing.comment = comment
-        existing.price = Double(units) * item.price
-        self.items.setValue(key:item.sku, value:existing)
+        addElement(itemToAdd)
+        
     }
-    
     func notify() {
         NotificationCenter.default.post(
         name: .itemInsertedInCart,
         object: nil)
     }
+    
+    var model:Cart { get {return self}}
+    
+    override func addElement(_ e: Element) {
+        super.addElement(e)
+        total += e.price
+    }
+    
+    var payload:Data? {
+        get {
+            return JSONHelper()
+                .jsonFromDict(type:OrderItem.self,
+                        dict:_elements)
+        }
+    }
+
+
 }
 
 

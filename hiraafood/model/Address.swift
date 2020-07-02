@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Address: Codable {
+class Address: Codable,HasKeyProtcol {
     var kind: Kind
     var owner: String
     var line1: String
@@ -48,5 +48,7 @@ struct Address: Codable {
         self.tips = tips
     }
     
-    
+    var key : String {
+        get {return kind.rawValue}
+    }
 }

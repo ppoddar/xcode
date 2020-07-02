@@ -40,7 +40,7 @@ extension UIColor {
      */
     public convenience init?(hex: String) {
         let r, g, b, a: CGFloat
-        NSLog("creating color with code \(hex)")
+        //NSLog("creating color with code \(hex)")
         if hex.hasPrefix("#") {
             let start = hex.index(hex.startIndex, offsetBy: 1)
             let hexColor = String(hex[start...])
@@ -54,7 +54,7 @@ extension UIColor {
                     g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
                     b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
                     a = CGFloat(hexNumber & 0x000000ff) / 255
-                    NSLog("creating color red:\(r) green:\(g) blue:\(b) alpha:\(a)")
+                    //NSLog("creating color red:\(r) green:\(g) blue:\(b) alpha:\(a)")
                     self.init(red: r, green: g, blue: b, alpha: a)
                     return
                 }

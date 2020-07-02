@@ -71,7 +71,7 @@ class OrderItemController: UIViewController {
 
         itemView?.item = self.item // must set item
         UIFactory.round(orderButton)
-        let existingItem:OrderItem? = cart.items[item.sku]
+        let existingItem:OrderItem? = cart[item.sku]
         units.start = existingItem?.units ?? 1
         // action handlers
         orderButton.addTarget(self, action: #selector(order), for:.touchUpInside)
@@ -123,7 +123,7 @@ class OrderItemController: UIViewController {
     }
     
     @objc func order() {
-        cart.setItem(item:self.item,
+        cart.addItem(item:self.item,
             units: units.value,
             comment:comment.text)
         (presentingViewController as? OrderPageController)?.refresh()

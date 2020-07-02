@@ -1,90 +1,99 @@
 import UIKit
 //import Razorpay
 class PaymentController: BaseViewController {
-    var billingAddress:Address = Address()
-    var deliveryAddress:Address = Address()
-    var oid:String
-    var invoice:Invoice
-    init(oid:String, billingAddress:Address, deliveryAddress:Address) {
-        self.oid = oid
-        self.invoice = Invoice()
-        self.billingAddress = billingAddress
-        self.deliveryAddress = deliveryAddress
-        super.init(nibName:nil, bundle:nil)
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        createInvoice()
-         //showPaymentForm(invoice: invoice)
-        // Do any additional setup after loading the view.
-    }
-    
-    /*
-     * server call to create a bill
-     */
-    func createInvoice() {
-        let app:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-        let user:User = User()//app.getUser()
-        let urlTemplate = "/invoice/?uid=%@&oid=%@"
-        let oid = "1234"
-        let url = String(format:urlTemplate, user.name, oid)
-        var addresses = IndexedDictionary<Address>()
-        addresses.setValue(key:"billingAddress", value:billingAddress)
-        addresses.setValue(key:"deliveryAddress", value:deliveryAddress)
-        let payload:Data? = JSONHelper().jsonFromDict(type:Address.self, dict:addresses)
-        
-        Server.singleton.post(url: url,
-            payload: payload) { result in
-            do {
-                switch (result) {
-                    case .success:
-                        self.invoice = try self.convertServerResponse(result)
-                        self.setupView()
-                    case .failure (let error):
-                        self.raiseAlert("Billing Error", message: String(describing: error))
-                }
-            } catch {
-                
-            }
-        }
-    }
-    
-    func setupView() {
-        let bill = InvoiceView(invoice: invoice)
-        self.view.addSubview(bill)
-        
-        let payButton = UIFactory.button("Pay")
-        payButton.addTarget(self, action: #selector(showPaymentForm), for: .touchUpInside)
-    }
-    
-    @objc func showPaymentForm(){
-        let app = UIApplication.shared.delegate as! AppDelegate
-        let user = User()//app.getUser()
-        let options: [String:Any] = [
-            "amount": invoice.total, //This is in currency subunits. 100 = 100 paise= INR 1.
-            "currency": "INR",//We support more that 92 international currencies.
-            "description": "\(app.name) order \(invoice.id)",
-            "order_id": invoice.payorder,
-            "image": app.logo,
-            "name":  app.name,
-            "prefill": [
-                "contact": user.phone,
-                "email": user.email
-            ],
-            "theme": [
-                "color": "#F37254"
-            ]
-        ]
-        NSLog("Razor pay options \(options)")
-        //razorpay.open(options)
-    }
+    var invoiceView:InvoiceView
+    //var billingAddress:Address  = Address()
+    //var deliveryAddress:Address = Address()
+    var content:UIStackView
+    var paymentButton:UIButton
+    var layoutComplete:Bool
+     init(invoice:Invoice) {
+        self.invoiceView = InvoiceView(invoice:invoice)
+        self.content = UIStackView(frame: .zero)
+        //self.billingAddress = billingAddress
+        //self.deliveryAddress = deliveryAddress
+        self.content = UIStackView()
+        self.paymentButton   = UIFactory.button("pay")
+        layoutComplete = false
+         
+        super.init(nibName: nil, bundle: nil)
 
-   
+         content.axis = .vertical
+         content.alignment = .center
+         content.distribution = .fill
+         content.spacing = UIConstants.VGAP
+         content.autoresizingMask = []
+         content.translatesAutoresizingMaskIntoConstraints = false
+         
+         self.view.frame = .zero
+         self.view.autoresizingMask = []
+         self.view.translatesAutoresizingMaskIntoConstraints = false
+     }
+     
+     required init?(coder: NSCoder) {
+         fatalError("init(coder:) has not been implemented")
+     }
 
-}
+     override func viewDidLoad() {
+         NSLog("======== viewDidLoad =========")
+         super.viewDidLoad()
+         self.view.backgroundColor = .white
+         invoiceView.reloadInputViews()
+         NSLog("\(type(of:self)).view.frame \(self.view.frame)")
+         NSLog("\(type(of:self)).view= \(Unmanaged.passUnretained(self.view).toOpaque())")
+     }
+     
+     override func loadView() {
+         NSLog("======== \(type(of:self)).loadView =========")
+         super.loadView()
+         NSLog("loadView().adding arranged subviews")
+         content.addArrangedSubview(invoiceView.view)
+         content.addArrangedSubview(paymentButton)
+         
+         invoiceView.view.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.vertical)
+
+         self.view.addSubview(content)
+         paymentButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
+         paymentButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.horizontal)
+         
+         paymentButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
+     
+         NSLog("\(type(of:self)).view.frame \(self.view.frame)")
+         NSLog("\(type(of:self)).view \(Unmanaged.passUnretained(self.view).toOpaque())")
+
+     }
+     
+     override func viewWillLayoutSubviews() {
+         if (layoutComplete) {return}
+         super.viewWillLayoutSubviews()
+         NSLog("======== \(type(of:self)).viewWillLayoutSubviews =========")
+         NSLog("\(type(of:self)).view= \(Unmanaged.passUnretained(self.view).toOpaque())")
+         NSLog("\(type(of:self)).view frame \(self.view.frame)")
+         NSLog("\(type(of:self)).view bounds \(self.view.bounds)")
+         NSLog("\(type(of:self)).viewWillLayoutSubviews().setting contraints")
+         let safeArea = self.view.safeAreaLayoutGuide
+         NSLog("\(type(of:self)).safe area frame \(safeArea.layoutFrame)")
+         self.view.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+         
+         let bill = invoiceView.asTable
+         NSLayoutConstraint.activate([
+             content.topAnchor.constraint(equalTo: safeArea.topAnchor),
+             content.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+             content.widthAnchor.constraint(equalTo: safeArea.widthAnchor),
+             content.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.6),
+             
+             bill.leadingAnchor.constraint(equalTo: content.leadingAnchor),
+             bill.trailingAnchor.constraint(equalTo: content.trailingAnchor),
+             bill.topAnchor.constraint(equalTo: content.topAnchor),
+         ])
+         layoutComplete = true
+     }
+      
+     
+     @objc func pay () {
+         
+     }
+     
+     
+ }
+

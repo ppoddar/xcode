@@ -55,75 +55,104 @@ let items:[Item] = [
          desc: "",
          rating:3,
          image: "/images/item/singara.jpg" ),
-
-    ]
+    
+]
 
 let addresses = [
     "billing": Address(kind:"billing", owner:"tester",
-        line1: "1234 Hoover Street", zip: "90056",
-        line2:"", city: "Menlo Park", tips:"some tip"),
+                       line1: "1234 Hoover Street", zip: "90056",
+                       line2:"", city: "Menlo Park", tips:"some tip"),
     "home":    Address(kind:"home",    owner:"tester",
-        line1: "AA 10/7", zip: "700 059",
-        line2:"line2", city: "Baguiati", tips:"some tip"),
+                       line1: "AA 10/7", zip: "700 059",
+                       line2:"line2", city: "Baguiati", tips:"some tip"),
     "office":  Address(kind:"office",  owner:"tester",
-        line1:"5926 Saint Agnes Drive", zip: "89654"),
- ]
-struct TestDataFactory {
-    static func getMenu() -> Menu {
+                       line1:"5926 Saint Agnes Drive", zip: "89654"),
+]
+
+
+class MockServer : ServerProtocol {
+    
+    func getServerInfo() -> ServerInfo {
+        return ServerInfo()
+    }
+    
+    func createOrder(items: Dictionary<String,
+        OrderItem>) -> Order {
+        let order = Order(id: "1234")
+        for (_,value) in items {
+            let orderItem = value
+            order.addElement(orderItem)
+        }
+        return order
+    }
+    
+    func createInvoice(order: Order,
+                       billingAddress: Address,
+                       deliveryAddress: Address) -> Invoice {
+        let invoice:Invoice = Invoice()
+        for (_,value) in order.items {
+            let price:InvoiceItem = InvoiceItem(
+                type:InvoiceItemType.price,
+                item:value)
+            
+            let tax:InvoiceItem = InvoiceItem(
+                type:InvoiceItemType.tax,
+                item:value)
+            let discount:InvoiceItem = InvoiceItem(
+                type:InvoiceItemType.discount,
+                item:value)
+            
+            invoice.addElement(price)
+            invoice.addElement(tax)
+            invoice.addElement(discount)
+        }
+        return invoice
+    }
+    
+    
+    func getAddresses() ->
+        Dictionary<String, Address> {
+            return addresses
+    }
+    
+    func getUser() -> User {
+        return User()
+    }
+    
+    func getMenu() -> Menu {
         let menu:Menu = Menu(items: items)
         return menu
     }
-    static func randomItem() -> Item {
+    
+    func randomItem() -> Item {
         let N:Int = items.count
         let idx = Int.random(in: 1..<N)
         return items[idx]
     }
     
-    static func getOrder() -> Order {
-        var order = Order(id: "1234")
+    func createRandomOrder() -> Order {
+        let order = Order(id: "1234")
         let N:Int = Int.random(in: 2...10)
         for _ in 0..<N {
-            let item = TestDataFactory.randomItem()
+            let item = randomItem()
             let units:Int = Int.random(in: 1...10)
             let orderItem:OrderItem = OrderItem(
                 sku:item.sku, name:item.name,
                 units:units,
                 price: item.price*Double(units))
-            order.addItem(orderItem)
+            order.addElement(orderItem)
         }
         return order
     }
     
-    static func getAddress(key:String) -> Address {
-        return addresses[key]!
-    }
-    
-    static func getAddresses() -> Dictionary<String,Address> {
-        return addresses
-    }
-    
-    static func getCart() -> Cart {
+    func getCart() -> Cart {
         let cart:Cart = Cart()
         return cart
     }
-    
-    static func viewController(_ c:ControllerUnderTest) -> UIViewController {
-        switch c {
-         case .welcome:
-             return WelcomeViewController()
-         case .order:
-             return OrderPageController()
-         case .checkout:
-             return CheckoutViewController(cart: TestDataFactory.getCart())
-         case .payment:
-             return PaymentController(oid:"1234",
-                                      billingAddress: TestDataFactory.getAddress(key: "billing"),
-                                      deliveryAddress: TestDataFactory.getAddress(key: "delivery"))
-         case .delivery:
-            return DeliveryController(order: TestDataFactory.getOrder(), addresses:TestDataFactory.getAddresses())
-        case .address:
-            return AddressSelectionViewController(addresses: TestDataFactory.getAddresses())
-         }
-
-    }
 }
+
+
+
+
+
+

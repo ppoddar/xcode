@@ -26,33 +26,37 @@ class AddressSelectionView: UIStackView {
         self.selectedAddressIndex = 0
         self.keyOrder = addresses.keys.sorted()
         self.navigationPanel = NavigationPanel()
-        self.newAddress  = UIButton()
+        self.newAddress  = UIFactory.button("new address")
         
         super.init(frame:.zero)
         
         navigationPanel.delegate = self
-        self.newAddress.setTitle("new address", for: .normal)
         self.newAddress.addTarget(self, action: #selector(openAddressDialog), for: .touchUpInside)
         
         self.isUserInteractionEnabled = true
         self.translatesAutoresizingMaskIntoConstraints = false
         self.autoresizingMask = []
         self.backgroundColor = .white
-        
+        self.clipsToBounds = true
         axis         = .vertical
         distribution = .fill
         alignment    = .fill
     
         let firstView = self.addressViews[keyOrder[0]]!
-        insertArrangedSubview(firstView, at: 0)
-        addArrangedSubview(navigationPanel)
-        addArrangedSubview(newAddress)
+        insertArrangedSubview(navigationPanel, at:0)
+        insertArrangedSubview(firstView,       at:1)
+        insertArrangedSubview(newAddress,      at:2)
+        
+        UIFactory.border(firstView)
+        UIFactory.border(navigationPanel)
+        UIFactory.border(newAddress)
+
             
         navigationPanel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
         newAddress.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.horizontal)
         
         NSLog("init() AddressSelection.frame \(self.frame)")
-        self.logViewHierarchy(view: self, num: 0)
+        //self.logViewHierarchy(view: self, num: 0)
     }
     
     required init(coder: NSCoder) {
@@ -106,12 +110,19 @@ class AddressSelectionView: UIStackView {
     func showAddress() {
         let key = keyOrder[self.selectedAddressIndex]
         NSLog("\(type(of:self)).showAddress [\(key)] at index \(selectedAddressIndex) of \(addresses.count)")
-        let exists = addressViews[key] != nil
-        let viewToRemove = arrangedSubviews[0]
-        let viewToReplace = addressViews[keyOrder[selectedAddressIndex]]!
+        //let exists = addressViews[key] != nil
+        let address = self.addresses[key]
+        navigationPanel.setLabel(text: address?.kind.rawValue ?? "No header")
+        
+        let viewToRemove = arrangedSubviews[1]
+        let viewToReplace = addressViews[key]!
         self.removeArrangedSubview(viewToRemove)
         viewToRemove.removeFromSuperview()
-        self.insertArrangedSubview(viewToReplace, at: 0)
+        self.insertArrangedSubview(viewToReplace, at: 1)
+        //viewToReplace.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        //viewToReplace.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        
+        
         setNeedsDisplay()
     }
    
@@ -143,7 +154,7 @@ class AddressSelectionView: UIStackView {
         index = index + 1
         print("\(NSStringFromClass(type(of: view))) userInteractionEnabled: \(view.isUserInteractionEnabled)")
         for subview in view.subviews {
-            self.logViewHierarchy(view: subview as! UIView, num: index)
+            self.logViewHierarchy(view: subview, num: index)
         }
     }
 }
@@ -170,20 +181,16 @@ class NavigationButton :UIButton {
         let text = next ? "\u{25B6}" : "\u{25C0}" 
         self.setTitle(text, for: [])
         self.setTitleColor(.black, for: .normal)
-        self.setTitleColor(.gray,  for: .disabled)
         self.addTarget(self,
             action: #selector(showAddress),
             for: .touchUpInside)
-        self.backgroundColor = .yellow
+        //self.backgroundColor = .yellow
     }
     
     @objc
     func showAddress() {
         NSLog(" \(type(of:self)) showAddress")
-            
-        guard let c = delegate else {
-            return
-        }
+        guard let c = delegate else {return}
         if (up) {
             NSLog("\(self) calling showNext()")
             c.showNext()
@@ -194,9 +201,22 @@ class NavigationButton :UIButton {
     }
 }
 
+/*
+ * A panel with two buttons at exterme and
+ * flexible space in between
+ */
 class NavigationPanel :UIStackView {
     var nextButton:NavigationButton
     var prevButton:NavigationButton
+    var label:UILabel
+    
+    func setLabel(text:String)  {
+        NSLog("\(type(of:self)) setLabel \(text)")
+        label.text = text
+        self.setNeedsDisplay()
+      }
+    
+    /* set delegate to action handler */
     var delegate:AddressSelectionView? {
         didSet {
             nextButton.delegate = delegate
@@ -211,19 +231,31 @@ class NavigationPanel :UIStackView {
     init() {
         self.nextButton = NavigationButton(next: true)
         self.prevButton = NavigationButton(next:false)
+        self.label = UIFactory.label("")
         super.init(frame: .zero)
         
         axis = .horizontal
-        alignment = .top
+        alignment = .center
         distribution = .fill
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isUserInteractionEnabled = true
 
         addArrangedSubview(prevButton)
+        addArrangedSubview(label)
         addArrangedSubview(nextButton)
         
-        //prevButton.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        //nextButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        label.textAlignment = NSTextAlignment.center
+        prevButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        prevButton.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .vertical)
+        prevButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        prevButton.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        
+        nextButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        nextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .vertical)
+        nextButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        nextButton.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
+    
+        label.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .horizontal)
     }
     
     override var description: String {

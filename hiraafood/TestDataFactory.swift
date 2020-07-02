@@ -52,10 +52,4 @@ let items:[Item] = [
          image: "/images/item/singara.jpg" ),
 
     ]
-struct TestDataFactory {
-    static func getMenu() -> Menu {
-        let menu:Menu = Menu()
-        menu.items = items
-        return menu
-    }
-}
+

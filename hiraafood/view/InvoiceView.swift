@@ -1,53 +1,59 @@
 import UIKit
+import Foundation
 
 /*
- * Shows an invoice (bill).
- * Tablular view of inventory items.
- * Each item is rendered as per its type
- * Header and Footer is configured
+ * Control tabular view of a sectioned menu
+ *
  */
-class InvoiceView: UITableView,UITableViewDelegate,UITableViewDataSource {
-    static let cellIdentifer:String = "item"
-    
+class InvoiceView:GenericTableViewController<Invoice,InvoiceItemView> {
+    /*
+     * create tabular view of a menu.
+     * The view is grouped by menu items in category
+     * @param menu
+     * @param collapsed if true all sections are collapsed
+     */
     init(invoice:Invoice) {
-       self.invoice = invoice
-       super.init(frame: .zero, style:UITableView.Style.grouped)
+        super.init(model: invoice)
+         
+        self.view = SizedTableView(style: UITableView.Style.plain)
+            
+        self.configureTableView()
+        self.view.backgroundColor = .white
+        self.view.autoresizingMask = []
+        self.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        //self.view.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.5)
+        self.view.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var invoice:Invoice? {
-        didSet {
-            dataSource = self
-            delegate   = self
-            register(InvoiceItemView.self, forCellReuseIdentifier: InvoiceView.cellIdentifer)
-        
-            self.tableHeaderView = createHeader()
-            self.tableFooterView = createFooter()
-        }
-
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.invoice?.items.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceView.cellIdentifer)
-        as? InvoiceItemView
-        return cell!
-    }
-    
-    
-    func createHeader() -> UIView? {
-        let header = UIFactory.label(invoice?.id ?? "")
-        return header
+        fatalError()
     }
 
-    func createFooter() -> UIView? {
-        let footer = UIFactory.label(UIFactory.amount(invoice?.total ?? 0))
-        return footer
+    override func reloadInputViews() {
+        NSLog("\(type(of:self)).reloadInputViews ")
+        guard let table = self.view as? SizedTableView
+            else {return}
+        table.reloadData()
     }
+ 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NSLog("OrderView.viewDidAppear() ")
+        guard let table = self.view as? SizedTableView
+            else {return}
+        table.reloadData()
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+

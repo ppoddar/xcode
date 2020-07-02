@@ -55,9 +55,17 @@ class UIFactory {
     }
     
     static func border(_ view:UIView, color:UIColor? = UIColor.black) {
+        if view.isKind(of: UIStackView.self) {
+            let subViews:[UIView]? = (view as? UIStackView)?.arrangedSubviews
+            guard let subs = subViews else {return}
+            for v in subs {
+                UIFactory.border(v, color: color)
+            }
+        } else {
         view.layer.cornerRadius = 5
         view.layer.borderWidth  = 1
         view.layer.borderColor  = color?.cgColor
+        }
     }
     
     static func round(_ view:UIView, color:UIColor? = UIColor.black) {
@@ -102,9 +110,12 @@ class UIFactory {
         return counter
     }
     
-    static func amount(_ a:Double) -> String {
+    /*
+     * Return string with currency symbok for given amount
+     */
+    static func amount(value:Double) -> String {
         let INR = "\u{20B9}"
-        let s = String(format: "%.2f", a)
+        let s = String(format: "%.2f", value)
         return INR+s
     }
     
@@ -281,7 +292,7 @@ extension String.StringInterpolation {
 
 extension UIButton {
     open override var intrinsicContentSize: CGSize {
-        return CGSize(width: 48, height: 64)
+        return CGSize(width: 48, height: 24)
     }
 }
 
@@ -298,4 +309,14 @@ extension UIStackView {
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(subView, at: 0)
     }
+    
+    func setBorder(_ color: UIColor = .black) {
+        let subView = UIView(frame: bounds)
+        subView.backgroundColor = color
+        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        UIFactory.border(subView)
+        insertSubview(subView, at: 0)
+    }
+    
+    
 }

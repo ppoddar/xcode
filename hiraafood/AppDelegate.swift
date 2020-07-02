@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window:UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("=========== Starting application =======")
+        /*
         Server.singleton.get(url: "/connect") {
             result in
                 switch result {
@@ -27,23 +28,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 }
             }
-        
+        */
         if #available(iOS 13, *) {
             print("iOS 13 is available. SceenDelegate will open the window")
         } else {
-            
+           window = UIWindow.init(frame: UIScreen.main.bounds)
+           let mainViewController = WelcomeViewController()
+           window!.rootViewController = mainViewController
+           window!.makeKeyAndVisible()
         }
-        // Initialize the window
-//        window = UIWindow.init(frame: UIScreen.main.bounds)
-                
-        // Allocate memory for an instance of the 'MainViewController' class
- //       let mainViewController = WelcomeViewController()
-        
-        // Set the root view controller of the app's window
- //       window!.rootViewController = mainViewController
-        
-        // Make the window visible
-  //      window!.makeKeyAndVisible()
         
         return true
     }

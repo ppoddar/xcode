@@ -33,30 +33,28 @@ class AddressView: UIStackView {
         }
 
         
-        let header  = UIStackView()
-        
+        //let header  = UIStackView()
         let details = UIStackView()
         details.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 5, right: 5)
-        header.autoresizingMask = []
+        //header.autoresizingMask = []
         details.autoresizingMask = []
-        header.translatesAutoresizingMaskIntoConstraints  = false
+        //header.translatesAutoresizingMaskIntoConstraints  = false
         details.translatesAutoresizingMaskIntoConstraints = false
         
-        header.axis = .vertical
-        header.alignment = .fill
-        header.distribution = .fillEqually
+        //header.axis = .vertical
+        //header.alignment = .fill
+        //header.distribution = .fillEqually
         
-        header.setBackgroundColor(UIColor.green)
+        //header.setBackgroundColor(UIColor.green)
         details.setBackgroundColor(UIColor.white)
-
         details.axis = .vertical
         details.alignment = .fill
         details.distribution = .fillEqually
         details.isLayoutMarginsRelativeArrangement = true
         
-        let kind  = UIFactory.label(address.kind.rawValue, fontSize:24)
-        kind.textAlignment = .center
-        header.addArrangedSubview(kind)
+        //let kind  = UIFactory.label(address.kind.rawValue, fontSize:24)
+        //kind.textAlignment = .center
+        //header.addArrangedSubview(kind)
 
         let line1 = UIFactory.label(address.line1, fontSize:18)
         //line1.backgroundColor = .magenta
@@ -80,9 +78,10 @@ class AddressView: UIStackView {
         details.addArrangedSubview(zip)
         
         
-        self.addArrangedSubview(header)
+        //self.addArrangedSubview(header)
         self.addArrangedSubview(details)
         
+
         self.setNeedsDisplay()
      }
      

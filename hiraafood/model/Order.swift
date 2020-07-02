@@ -2,52 +2,47 @@ import UIKit
 /*
  * collection of oreder item
  */
-struct Order: Codable {
+class Order: BaseTabular<OrderItem>, Codable {
+    
+    
+    
+    typealias Model   = Order
+    typealias Element = OrderItem
     var id:String
     var created:String
-    var total:Double
-    var items:IndexedDictionary<OrderItem>
     
     enum CodingKeys : String,CodingKey {
-        case id, created, total, items
+        case id, created
     }
     
+    
+    
+    required init() {
+        self.id = ""
+        self.created = ""
+        super.init()
+    
+    }
     init(id:String) {
         self.id = id
         self.created = ""
-        self.total  = -1
-        self.items  =  IndexedDictionary<OrderItem>()
-    }
-    mutating func addItem(_ item:OrderItem) {
-        total += item.price
-        guard var existing = items[item.sku] else {
-            items.setValue(key: item.sku, value: item)
-            return
-        }
-        existing.units += item.units
-        items.setValue(key: existing.sku, value: existing)
+        super.init()
     }
     
-    mutating func decode(from decoder:Decoder) throws {
+    override func decode(from decoder:Decoder) throws {
         NSLog("decoding Order")
+        try super.decode(from: decoder)
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id  = try container.decode(String.self, forKey: .id)
         self.created = try container.decode(String.self, forKey: .created)
-        let totalS = try container.decode(String.self, forKey: .total)
-        self.total = Double(totalS)!
-        let dict:Dictionary<String,Data> = try container.decode(Dictionary.self, forKey: .items)
-        self.items = IndexedDictionary<OrderItem>()
-        for (key,value) in dict {
-            do {
-                let item = try JSONDecoder().decode(OrderItem.self, from:value)
-                items.setValue(key: key, value: item)
-            } catch {
-                NSLog(String(describing: error))
-            }
-        }
     }
+        
+    var model: Order {get {return self}}
     
-    
+    override func addElement(_ e: Element) {
+        super.addElement(e)
+        total += e.price
+    }
 }
 
 

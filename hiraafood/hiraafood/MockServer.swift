@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-enum ControllerUnderTest : String, CaseIterable {
-    case welcome, order, delivery, payment, checkout, address
-}
-
 let items:[Item] = [
     Item(sku:"101",
          name: "Vegeterian Thali",
@@ -110,7 +106,7 @@ class MockServer : ServerProtocol {
     }
     
     
-    func getAddresses() ->
+    func getAddresses(user:User) ->
         Dictionary<String, Address> {
             return addresses
     }
@@ -124,7 +120,7 @@ class MockServer : ServerProtocol {
         return menu
     }
     
-    func randomItem() -> Item {
+    func getRandomItem() -> Item {
         let N:Int = items.count
         let idx = Int.random(in: 1..<N)
         return items[idx]
@@ -134,7 +130,7 @@ class MockServer : ServerProtocol {
         let order = Order(id: "1234")
         let N:Int = Int.random(in: 2...10)
         for _ in 0..<N {
-            let item = randomItem()
+            let item = getRandomItem()
             let units:Int = Int.random(in: 1...10)
             let orderItem:OrderItem = OrderItem(
                 sku:item.sku, name:item.name,

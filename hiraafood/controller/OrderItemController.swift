@@ -1,51 +1,136 @@
-//
-//  OrderFormControllerViewController.swift
-//  hiraafood
-//
-//  Created by Pinaki Poddar on 6/15/20.
-//  Copyright © 2020 Digital Artisan. All rights reserved.
-//
-
 import UIKit
 class OrderItemController: UIViewController {
     var cart:Cart
     var item:Item
-    var units:Counter  = Counter()
-    var itemView:ItemView?
+    var itemView:ItemView
+    var units:Counter
+    var comment:KeyboardTextView
     var orderButton:UIButton
-    var comment:KeyboardTextView = UIFactory.textView(placeHolderText: "any instructions for the chef?")
+    var layoutComplete:Bool
     
     init(item:Item,  cart:Cart) {
-        NSLog("created OrderItemController with \(item)")
+        NSLog("\(type(of:self)).init() with \(item)")
         self.item = item
         self.cart = cart
-        self.itemView = ItemView()
+        self.itemView = ItemView(item: item)
+        self.units = Counter(text:"how many?", start:cart[item.sku]?.units ?? 1 )
+        self.comment = UIFactory.textView(
+            placeHolderText: "any instructions for the chef?")
+        comment.backgroundColor =  UIConstants.COLOR_MUTED
         self.orderButton = UIFactory.button("order")
+        layoutComplete = false
+        
         super.init(nibName: nil, bundle: nil)
-    }
+        
+
+        self.view.frame = .zero
+        self.view.autoresizingMask = []
+        self.view.backgroundColor = .white
+        self.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.title = "Order"
+        self.orderButton.addTarget(self,
+            action: #selector(order),
+            for:.touchUpInside)
+   }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    /*
+     * framework callback
+     *     set frame to self.view
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
-        setSceneHeader(titleText: "Order")
-        view.backgroundColor = .white
-        // navigation buttons
-        self.navigationItem.rightBarButtonItem  =
-            UIBarButtonItem(barButtonSystemItem: .close,
-                    target: self,
-                    action: #selector(back))
+        self.view.backgroundColor = .red
+        let safeArea = self.view.safeAreaLayoutGuide
+        setSceneHeader()
+        self.view.frame = CGRect(
+            x:safeArea.layoutFrame.origin.x,
+            y:safeArea.layoutFrame.origin.y,
+            width:UIScreen.main.bounds.width,
+            height: UIScreen.main.bounds.height)
+        // keyboard events
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "X",
-            style: .plain,
-            target: self,
-            action: #selector(back))
+        
+    }
+    /*
+     * framework callback
+     * add all constraints
+     */
+    override func loadView() {
+        super.loadView()
+        self.view.addSubview(itemView)
+        self.view.addSubview(units)
+        self.view.addSubview(comment)
+        self.view.addSubview(orderButton)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if (layoutComplete) {return}
+        print(" \(type(of: self)).viewWillLayoutSubviews")
+        let safeArea = self.view.safeAreaLayoutGuide
+        let margins  = self.view.layoutMargins
+        print("safeArea \(safeArea)")
+        print("margins \(margins)")
+        // constraints of anchor UI element (itemView)
+        // is pinned to self.view
+        // The other UI elemenst are constrained
+        // relative to anchor item
+        guard let superview = self.view.superview else {
+            print("=========== NO SUPERVIEW On viewDidLoad ============")
+            return
+        }
+        UIFactory.pin(self.view, toView: superview)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        itemView.frame = CGRect(
+            x:margins.left,
+            y:margins.top,
+            width: itemView.intrinsicContentSize.width,
+            height: itemView.intrinsicContentSize.height)
+        print("itemView.frame \(itemView.frame)")
+        NSLayoutConstraint.activate([
+            itemView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: margins.left),
+            itemView.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: margins.left),
+            itemView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            itemView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: UIConstants.VGAP),
+            //itemView.heightAnchor.constraint(equalToConstant: itemView.frame.height),
+            itemView.heightAnchor.constraint(equalTo:self.view.heightAnchor, multiplier: 0.5),
+            
+            units.topAnchor.constraint(equalTo: itemView.bottomAnchor),
+            units.centerXAnchor.constraint(equalTo: itemView.centerXAnchor),
+           
+            comment.topAnchor.constraint(equalTo: units.bottomAnchor),
+            comment.centerXAnchor.constraint(equalTo: itemView.centerXAnchor),
+            
+            orderButton.topAnchor.constraint(equalTo: comment.bottomAnchor),
+            comment.centerXAnchor.constraint(equalTo: itemView.centerXAnchor)
 
+        ])
+        layoutComplete = true
+        super.viewWillLayoutSubviews()
+    }
+    
+    @objc func back() {
+        self.navigationController?
+            .popViewController(animated: true)
+    }
+    
+    @objc func order() {
+        cart.addItem(item:self.item,
+            units: units.value,
+            comment:comment.text)
+        (presentingViewController as? MenuController)?.itemInsertedInCart()
+        back()
     }
     
     @objc func keyboardWillShow(notification:NSNotification) {
@@ -66,69 +151,6 @@ class OrderItemController: UIViewController {
            }
     }
     
-    override func loadView() {
-        super.loadView()
-
-        itemView?.item = self.item // must set item
-        UIFactory.round(orderButton)
-        let existingItem:OrderItem? = cart[item.sku]
-        units.start = existingItem?.units ?? 1
-        // action handlers
-        orderButton.addTarget(self, action: #selector(order), for:.touchUpInside)
-        comment.backgroundColor = UIColor(red: 255, green: 255, blue: 0, alpha: 0.1)
-        // Layout is driven via intermediate content
-        // on which layput margins are honored
-        self.view.addSubview(itemView!)
-        self.view.addSubview(units)
-        self.view.addSubview(comment)
-        self.view.addSubview(orderButton)
-    }
-    /*
-     * point at  which bounds are computed
-     */
-    override func viewWillLayoutSubviews() {
-        let safeArea = self.view.safeAreaLayoutGuide
-        self.view.layoutMargins = UIEdgeInsets(
-            top: safeArea.layoutFrame.origin.y,
-            left:safeArea.layoutFrame.origin.x,
-            bottom:safeArea.layoutFrame.height + safeArea.layoutFrame.origin.y,
-            right: safeArea.layoutFrame.width + safeArea.layoutFrame.origin.x)
-        
-        guard let iv:ItemView = itemView else {return}
-        let margins = self.view.layoutMarginsGuide
-        
-        iv.leftAnchor.constraint(equalTo:   margins.leftAnchor).isActive = true
-        iv.topAnchor.constraint(equalTo:    margins.topAnchor).isActive = true
-        iv.rightAnchor.constraint(equalTo:  safeArea.rightAnchor, constant: -margins.layoutFrame.width).isActive = true
-        iv.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.5).isActive = true
-        
-        units.leftAnchor.constraint(equalTo: margins.leftAnchor, constant:UIConstants.LEFT_MARGIN).isActive = true
-        units.topAnchor.constraint(equalTo:  iv.bottomAnchor, constant: UIConstants.LINE_HEIGHT).isActive = true
-        
-        comment.leftAnchor.constraint(equalTo: margins.leftAnchor).isActive = true
-        comment.topAnchor.constraint(equalTo: units.bottomAnchor, constant:UIConstants.VGAP).isActive = true
-        comment.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -margins.layoutFrame.width).isActive = true
-        let numberOfLines:Int = 4
-        let height = CGFloat(numberOfLines)*UIConstants.LINE_HEIGHT
-        comment.heightAnchor.constraint(equalToConstant:height).isActive = true
-
-        orderButton.topAnchor.constraint(equalTo:comment.bottomAnchor, constant:UIConstants.VGAP).isActive = true
-        orderButton.centerXAnchor.constraint(equalTo:view.centerXAnchor).isActive = true
-        orderButton.heightAnchor.constraint(equalToConstant:UIConstants.LINE_HEIGHT).isActive = true
-
-    }
-    
-    @objc func back() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @objc func order() {
-        cart.addItem(item:self.item,
-            units: units.value,
-            comment:comment.text)
-        (presentingViewController as? OrderPageController)?.refresh()
-        back()
-    }
     
     
 }

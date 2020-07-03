@@ -5,8 +5,10 @@ class WelcomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setSceneHeader(titleText: "Welcome")
+        self.title = UIConstants.APP_NAME
+        setSceneHeader()
     }
+    
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
@@ -15,7 +17,7 @@ class WelcomeViewController: BaseViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
         let title:UILabel = UIFactory.label("best food in town")
-        title.font = UIFont.systemFont(ofSize: 12)
+        title.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
         imageView.addSubview(title)
         
         self.view.addSubview(imageView)
@@ -23,17 +25,20 @@ class WelcomeViewController: BaseViewController {
         let click = UITapGestureRecognizer(target: self, action: #selector(WelcomeViewController.enterMain))
         imageView.addGestureRecognizer(click)
         
-        imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        title.topAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
-        title.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            title.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+            title.centerXAnchor.constraint(equalTo: imageView.centerXAnchor)
+
+        ])
     }
     
     @objc func enterMain() throws {
         NSLog("============ Starting main application ============")
         
         let menu = server.getMenu()
-        let page = OrderPageController(menu: menu)
+        let page = MenuController(menu: menu)
         page.menu = menu
         show(page, sender: self)
         //self.modalPresentationStyle = .fullScreen

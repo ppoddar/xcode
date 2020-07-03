@@ -37,7 +37,7 @@ class Rating:  UIStackView {
         let config:UIImage.SymbolConfiguration = UIImage.SymbolConfiguration(weight: .medium)
         let image:UIImage? = UIImage(systemName: name, withConfiguration: config)
         let view = UIImageView(image:image)
-        view.tintColor = UIConstants.COLOR_1
+        view.tintColor = UIConstants.COLOR_HIGHLIGHT
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
         

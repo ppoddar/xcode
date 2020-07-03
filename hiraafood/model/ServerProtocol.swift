@@ -18,7 +18,7 @@ protocol ServerProtocol {
     func createInvoice(order:Order,
         billingAddress:Address,
         deliveryAddress:Address) -> Invoice
-    func getAddresses() -> Dictionary<String,Address>
+    func getAddresses(user:User) -> Dictionary<String,Address>
     func getUser() -> User
      
     

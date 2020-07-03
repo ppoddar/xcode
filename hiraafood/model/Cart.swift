@@ -5,7 +5,6 @@ import Foundation
  */
 class Cart: BaseTabular<OrderItem>, Codable {
     func addItem(item:Item, units:Int, comment:String) {
-        notify()
         let existing = self[item.sku]
         var itemToAdd:OrderItem
         let price:Double = item.price * Double(units)
@@ -22,11 +21,7 @@ class Cart: BaseTabular<OrderItem>, Codable {
         addElement(itemToAdd)
         
     }
-    func notify() {
-        NotificationCenter.default.post(
-        name: .itemInsertedInCart,
-        object: nil)
-    }
+    
     
     var model:Cart { get {return self}}
     

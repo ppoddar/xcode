@@ -11,28 +11,34 @@ import UIKit
  * Handles virtual keyboad with a placehoder
  */
 class KeyboardTextView: UITextView, UITextViewDelegate {
-    var placeHolder:UILabel
+    var placeHolder:UITextView
     var placeHolderShown:Bool
-    init(placeHolderText:String="", lines:Int=8) {
-        self.placeHolder = UILabel()
+    var lineCount:Int
+    init(placeHolderText:String="", lineCount:Int=4) {
+        self.placeHolder = UITextView()
         self.placeHolder.text = placeHolderText
         self.placeHolderShown = false
-        let frame:CGRect = CGRect(x:0, y:0,
-            width:Int(UIScreen.main.bounds.width),
-            height:Int(lines*Int(UIConstants.LABEL_HEIGHT)))
-        super.init(frame: frame, textContainer:nil)
+        self.lineCount = lineCount
+        super.init(frame: .zero, textContainer:nil)
         
-        configurePlaceHolder()
+        textContainer.lineBreakMode = .byWordWrapping
+        self.backgroundColor = UIConstants.COLOR_MUTED
 
         self.translatesAutoresizingMaskIntoConstraints = false
         self.delegate = self
         self.inputAccessoryView = doneToolbar()
+        
+        configurePlaceHolder()
+
     }
     
     func configurePlaceHolder() {
+        //placeHolder.frame = CGRect(x:10, y:10, width:200, height:24)
+        //placeHolder.sizeToFit()
+        placeHolder.backgroundColor = self.backgroundColor
+        placeHolder.tintColor = UIConstants.COLOR_MUTED
+
         self.addSubview(placeHolder)
-        placeHolder.frame = CGRect(x:0, y:0, width:100, height:24)
-        placeHolder.sizeToFit()
         //placeHolder.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         //placeHolder.leftXAnchor.constraint(equalTo: self.leftAnchor).isActive = true
     }
@@ -51,8 +57,6 @@ class KeyboardTextView: UITextView, UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
            NSLog("textViewDidEndEditing")
-        //self.resignFirstResponder()
-
     }
       
     func doneToolbar() -> UIToolbar {
@@ -74,9 +78,16 @@ class KeyboardTextView: UITextView, UITextViewDelegate {
         }
         
         @objc func doneButtonAction() {
-            //self.isEditable = false
-            //self.textViewDidEndEditing(self)
             self.endEditing(true)
         }
+    
+    
+    override var intrinsicContentSize: CGSize {
+        get {
+            return CGSize(
+                width: UIScreen.main.bounds.width,
+                height: UIConstants.LINE_HEIGHT * CGFloat(lineCount))
+        }
+    }
     
 }

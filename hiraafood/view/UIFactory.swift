@@ -3,31 +3,53 @@ class UIFactory {
     
     public static var ITEM_ROW_HEIGHT:CGFloat = CGFloat(100)
     
-    static func textView(placeHolderText:String="",lines:Int=8) -> KeyboardTextView {
-        let textView = KeyboardTextView(placeHolderText: placeHolderText, lines:lines)
+    static func textView(placeHolderText:String="",lineCount:Int=8) -> KeyboardTextView {
+        let textView = KeyboardTextView(placeHolderText: placeHolderText, lineCount:lineCount)
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.textContainer.lineBreakMode = .byWordWrapping
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.black.cgColor
+        
+        
         //textView.layer.borderColor = CGColor(srgbRed: 0,green: 0,blue: 255, alpha: 1)
         return textView
     }
     static func button(_ title:String?,
-        backgroundColor:UIColor = UIConstants.COLOR_1,
+        backgroundColor:UIColor = UIConstants.COLOR_TITLE,
         tintColor:UIColor = .white,
-        fontSize:Int = 16, bold:Bool=true) -> UIButton  {
+        fontSize:Int = 16,
+        bold:Bool=true,
+        rounded:Bool=true) -> UIButton  {
         let btn = UIButton(type: .system)
         btn.setTitle(title, for: .normal)
-        btn.frame = CGRect(x:0, y:0, width:UIConstants.BUTTON_WIDTH, height:UIConstants.BUTTON_HEIGHT)
+        btn.frame = CGRect(x:0, y:0,
+            width:UIConstants.BUTTON_WIDTH,
+            height:UIConstants.BUTTON_HEIGHT)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.backgroundColor = backgroundColor
-        btn.tintColor = tintColor
+        btn.tintColor       = tintColor
         if (bold) {
             btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: CGFloat(fontSize))
         }
         btn.contentEdgeInsets = UIEdgeInsets(top: 2, left: 10, bottom: 5, right: 10)
         btn.sizeToFit()
+        if (rounded) {
+            UIFactory.round(btn)
+        }
         
         return btn
+    }
+    
+    static func fixSize(view:UIView) {
+        view.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        view.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        view.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        view.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .vertical)
+    }
+    
+    static func flexSize(view:UIView, axis:NSLayoutConstraint.Axis) {
+        view.setContentHuggingPriority              (UILayoutPriority.defaultLow, for: axis)
+        view.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: axis)
     }
     
     static func label(_ text:String,
@@ -38,6 +60,7 @@ class UIFactory {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = textColor
+        
         if (bold) {
             lbl.font = UIFont.boldSystemFont(ofSize: CGFloat(fontSize))
         }
@@ -67,6 +90,24 @@ class UIFactory {
         view.layer.borderColor  = color?.cgColor
         }
     }
+    
+    static func pin(_ view:UIView, to:UILayoutGuide) {
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: to.topAnchor),
+            view.leftAnchor.constraint(equalTo: to.leftAnchor),
+            view.widthAnchor.constraint(equalTo: to.widthAnchor),
+            view.heightAnchor.constraint(equalTo: to.heightAnchor)
+        ])
+    }
+    static func pin(_ view:UIView, toView:UIView) {
+           NSLayoutConstraint.activate([
+               view.topAnchor.constraint(equalTo: toView.topAnchor),
+               view.leftAnchor.constraint(equalTo: toView.leftAnchor),
+               view.widthAnchor.constraint(equalTo: toView.widthAnchor),
+               view.heightAnchor.constraint(equalTo: toView.heightAnchor)
+           ])
+    }
+    
     
     static func round(_ view:UIView, color:UIColor? = UIColor.black) {
            view.layer.cornerRadius = 5
@@ -166,25 +207,60 @@ extension UIViewController {
         self.present(alert, animated: false)
 
     }
+    
     /*
      * Sets header of the scene
      */
-    func setSceneHeader(titleText:String) {
-        guard let navbar = navigationController?.navigationBar else {return}
-        guard let window = (UIApplication.shared.windows.first) else {return}
-        guard let statusBar = window.windowScene?.statusBarManager else {return}
+    func setSceneHeader(hideBackButton:Bool=false) {
+        //navigationController?.navigationBar.barStyle     = .black
+        navigationController?.navigationBar.tintColor    = .white
+        navigationController?.navigationBar.isTranslucent = false
+        // title text is set on view controller, not on navigation bar
         
-        //navbar.standardAppearance.doneButtonAppearance.tint
-        navbar.tintColor = .white
+        let appearence = UINavigationBarAppearance()
+        //appearence.configureWithDefaultBackground()
+        appearence.backgroundColor = UIConstants.COLOR_TITLE
+        appearence.titleTextAttributes = [
+            .foregroundColor:UIColor.white,
+            .font: UIFont.preferredFont(forTextStyle: .title1)
+        ]
         
-        let w = view.frame.width
-        let h = navbar.frame.height + statusBar.statusBarFrame.height
-        let barView = UIView(frame: CGRect(x:0, y:0,width:w,height: h))
+        navigationItem.standardAppearance = appearence
+        navigationItem.scrollEdgeAppearance = appearence
+        navigationItem.compactAppearance = appearence
+        
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.configureWithDefault(for: UIBarButtonItem.Style.plain)
+        navigationItem.standardAppearance?.buttonAppearance = buttonAppearance
+        navigationItem.scrollEdgeAppearance?.buttonAppearance = buttonAppearance
+        navigationItem.compactAppearance?.buttonAppearance = buttonAppearance
+
+        
+        if (hideBackButton) {
+            let backBarButtton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem = backBarButtton
+        } else {
+            let backBarButtton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+            navigationItem.backBarButtonItem = backBarButtton
+        }
+        let rightBarButtton = UIBarButtonItem(
+            image: UIImage(systemName: "text.justify"),
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(openSettings))
+        
+        navigationItem.rightBarButtonItem = rightBarButtton
+        
+        //let w = view.frame.width
+        //let h = navbar.frame.height + statusBar.statusBarFrame.height
+        /*
+        let barView = UIStackView()//frame: CGRect(x:0, y:0,width:w,height: h))
+        UIFactory.clear(navbar)
         navbar.addSubview(barView)
-        barView.backgroundColor   = UIConstants.COLOR_0
+        navbar.backgroundColor   = UIConstants.COLOR_0
         
         let title = UILabel()
-        title.frame = CGRect(x:0, y:0, width:view.frame.width - 50 , height:barView.frame.height - 10)
+        //title.frame = CGRect(x:0, y:0, width:view.frame.width - 50 , height:barView.frame.height - 10)
         title.text = titleText
         title.textAlignment = .center
         title.textColor = .white
@@ -196,21 +272,39 @@ extension UIViewController {
         back.setTitleColor(.white, for: .normal)
         
         let settings = UIButton()
-        settings.frame = CGRect(x:w-30, y:10, width:24,height:24)
-        let image = UIImage(systemName: "text.justify")
-        settings.setImage(image, for: .normal)
-        
-        settings.addTarget(self,
-            action: #selector(openSettings), for: .touchUpInside)
-        
+          settings.frame = CGRect(x:0, y:0, width:24,height:24)
+          let image = UIImage(systemName: "text.justify")
+          settings.setImage(image, for: .normal)
+         settings.addTarget(self,
+                action: #selector(openSettings),
+                for: .touchUpInside)
+            
         back.addTarget(self,
-            action: #selector(backPage), for: .touchUpInside)
+            action: #selector(backPage),
+            for: .touchUpInside)
+         
         
+        back.translatesAutoresizingMaskIntoConstraints = false
+        title.translatesAutoresizingMaskIntoConstraints = false
+        settings.translatesAutoresizingMaskIntoConstraints = false
+        barView.translatesAutoresizingMaskIntoConstraints = false
+        barView.addArrangedSubview(back)
+        barView.addArrangedSubview(title)
+        barView.addArrangedSubview(settings)
         
-        barView.addSubview(back)
-        barView.addSubview(title)
-        barView.addSubview(settings)
-    }
+        UIFactory.fixSize(view: back)
+        UIFactory.fixSize(view: settings)
+        UIFactory.flexSize(view: title, axis:.vertical)
+
+        barView.topAnchor.constraint(equalTo: navbar.topAnchor).isActive = true
+        barView.leftAnchor.constraint(equalTo: navbar.leftAnchor).isActive = true
+        barView.widthAnchor.constraint(equalTo: navbar.widthAnchor).isActive = true
+        barView.heightAnchor.constraint(equalTo: navbar.heightAnchor).isActive = true
+    
+    */
+ }
+    
+    
     
     
     @objc func openSettings() {
@@ -292,15 +386,11 @@ extension String.StringInterpolation {
 
 extension UIButton {
     open override var intrinsicContentSize: CGSize {
-        return CGSize(width: 48, height: 24)
+        return CGSize(width: UIConstants.BUTTON_WIDTH,
+                      height: UIConstants.BUTTON_HEIGHT)
     }
 }
 
-//extension UILabel {
-//    open override var intrinsicContentSize: CGSize {
-//        return CGSize(width: 100, height: 12)
-//    }
-//}
 
 extension UIStackView {
     func setBackgroundColor(_ color: UIColor) {

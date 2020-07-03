@@ -8,6 +8,18 @@
 
 import Foundation
 import UIKit
+
+enum ControllerUnderTest : String, CaseIterable {
+    case welcome,
+        item,
+        order,
+        delivery,
+        payment,
+        checkout,
+        address
+}
+
+
 class RandomStart {
     let server:MockServer = MockServer()
     
@@ -16,20 +28,26 @@ class RandomStart {
         switch c {
         case .welcome:
             return WelcomeViewController()
+        case .item:
+            return OrderItemController(item:server.getRandomItem(), cart:server.getCart())
         case .order:
-            return OrderPageController(menu: server.getMenu())
+            return MenuController(menu: server.getMenu())
         case .checkout:
             return CheckoutViewController(cart: server.getCart())
         case .payment:
             let order = server.createRandomOrder()
+            let addresses = server.getAddresses(user:User())
             let bill  = server.createInvoice(
                 order: order,
-                billingAddress:server.getAddresses()["billing"]!,
-                deliveryAddress:server.getAddresses()["delivery"]!)
+                billingAddress:addresses["billing"]!,
+                deliveryAddress:addresses["delivery"]!)
             return PaymentController(invoice: bill)
         case .delivery:
-            return DeliveryController(order: server.createRandomOrder(), addresses:server.getAddresses())
+            return DeliveryController(
+                order: server.createRandomOrder(),
+                addresses:server.getAddresses(user:User()))
         case .address:
-            return AddressSelectionViewController(addresses: server.getAddresses())
+            return AddressSelectionViewController(
+                addresses: server.getAddresses(user:User()))
         }
     }}

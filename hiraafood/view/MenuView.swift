@@ -56,10 +56,10 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
         table.dataSource = self
         table.bounces    = true
         table.isScrollEnabled = true
-        table.isSpringLoaded = true
+        table.isSpringLoaded = false
         table.register(ItemCell.self, forCellReuseIdentifier: MenuView.cellIdentifer)
         table.register(SectionHeaderView.self, forHeaderFooterViewReuseIdentifier: MenuView.sectionIdentifer)
-        self.setHeader(table: table)
+        //self.setHeader(table: table)
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -132,12 +132,12 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     
     /*
-     * alwyas true
+     * alwyas false
      */
      func tableView(_ tableView: UITableView,
                    shouldSpringLoadRowAt indexPath: IndexPath,
                    with context: UISpringLoadedInteractionContext) -> Bool {
-        return true
+        return false
     }
     /*
      * height of each row is same ansd constant
@@ -289,7 +289,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
      */
     func tableView(_ tableView: UITableView,
             didSelectRowAt indexPath: IndexPath) {
-        NSLog("=========> seleceted item at \(indexPath)")
+        NSLog("\(type(of:self)).didSelectRowAt \(indexPath)")
         let category:String = menu.category_names[indexPath.section]
         let items:[Item]? = menu.categorized_items[category]
         guard let item:Item = items?[indexPath.row] else {
@@ -299,14 +299,7 @@ class MenuView: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     func openSelectedItem(_ item:Item) {
-        
-        //NSLog("item \(String(describing: dump(item)))")
-        //tableView.deselectRow(at: indexPath, animated: true)
         let orderItemController = OrderItemController(item:item, cart:cart)
-        //show(orderItemController, sender:self)
-        
-        //self.modalPresentationStyle = .fullScreen
-        //self.present(orderItemController, animated: true)
         show(orderItemController, sender: self)
     }
 }

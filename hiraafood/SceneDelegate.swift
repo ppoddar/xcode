@@ -24,10 +24,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("SceneDelegate got main window")
 
         window = UIWindow(windowScene: windowScene)
-        let navbar = UINavigationController()
-        let main = WelcomeViewController()
-        navbar.viewControllers = [main]
-        window?.rootViewController = navbar
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.barTintColor = UIConstants.COLOR_TITLE
+        //let main = WelcomeViewController()
+        let main = RandomStart().randomController(.item)
+        main.view.backgroundColor = .white
+        main.view.isOpaque = false
+        navigationController.viewControllers = [main]
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 

@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window:UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("=========== Starting application =======")
+        
         /*
         Server.singleton.get(url: "/connect") {
             result in
@@ -63,7 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         user.name = userDefaults.string(forKey: "name") ?? ""
         user.fullName = userDefaults.string(forKey: "fullname") ?? ""
         return user
-        
+    }
+    
+    var server:ServerProtocol { get{
+        return MockServer()
+    }
     }
 }
 

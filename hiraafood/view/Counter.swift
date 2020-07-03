@@ -8,22 +8,40 @@
 
 import UIKit
 class Counter: UIStackView {
-    var stepper:UIStepper = UIStepper()
-    var label:UIButton = UIButton()
-    
-    init() {
-        self.start = 1
-        super.init(frame:.zero)
-        updateValue(v: 1)
-        translatesAutoresizingMaskIntoConstraints = false
-        axis = .horizontal
-        alignment = .fill
-        distribution = .fill
+    var stepper:UIStepper
+    var valueField:UIButton
+    var label:UILabel
+
+    init(text:String,start:Int=1) {
+        self.stepper = UIStepper()
+        self.valueField = UIButton()
+        self.label = UIFactory.label(text)
         
+        super.init(frame:.zero)
+        
+        axis = .horizontal
+        alignment    = .top
+        distribution = .equalSpacing
+
+        self.translatesAutoresizingMaskIntoConstraints = false
+        stepper.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        valueField.translatesAutoresizingMaskIntoConstraints = false
+        stepper.value = Double(start)
+        updateValue()
+        translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .white
+
         stepper.minimumValue = Double(1)
         stepper.isContinuous = false
         stepper.wraps = false
         stepper.stepValue = 1
+        
+        addArrangedSubview(label)
+        addArrangedSubview(valueField)
+        addArrangedSubview(stepper)
+        
+        setupView()
     }
     
     required init(coder: NSCoder) {
@@ -36,40 +54,37 @@ class Counter: UIStackView {
         }
     }
     
-    var start:Int {
-        didSet {
-            stepper.value = Double(start)
-            setupView()
-        }
-    }
-    
     func setupView() {
         let plus  = UIImageView(image:UIImage(systemName: "plus.square.fill",  withConfiguration: UIImage.SymbolConfiguration(scale: .medium)))
         let minus = UIImageView(image:UIImage(systemName: "minus.square.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium)))
-        plus.tintColor = .blue
-        minus.tintColor = .blue
         stepper.setIncrementImage(plus.image, for: .normal)
         stepper.setDecrementImage(minus.image, for: .normal)
-        stepper.addTarget(self, action: #selector(changeQuantity), for:.valueChanged)
+        stepper.addTarget(self, action: #selector(updateValue), for:.valueChanged)
         
+        valueField.isUserInteractionEnabled = false
+        valueField.contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        valueField.setTitle(String(Int(stepper.value)), for: .normal)
+        valueField.setTitleColor(.black, for: .normal)
         
-        label.contentEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
-        label.setTitle(String(Int(stepper.value)), for: .normal)
-        label.setTitleColor(.black, for: .normal)
-        label.isUserInteractionEnabled = false
         UIFactory.border(label)
-        addArrangedSubview(UIFactory.label("how many? "))
-        addArrangedSubview(label)
-        addArrangedSubview(stepper)
+        UIFactory.border(valueField)
+        UIFactory.border(stepper)
+        UIFactory.border(self)
+        
+        label.setContentHuggingPriority                   (UILayoutPriority.defaultLow,  for: .horizontal)
+        label.setContentCompressionResistancePriority     (UILayoutPriority.defaultHigh,  for: .horizontal)
+        valueField.setContentHuggingPriority              (UILayoutPriority.defaultHigh, for: .horizontal)
+        valueField.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: .horizontal)
     }
     
-    func updateValue(v:Double) {
-        label.setTitle(String(Int(v)), for: .normal)
+    @objc func updateValue() {
+        let v:Double = stepper.value
+        valueField.setTitle(String(Int(v)), for: .normal)
     }
-    
-    
-    @objc func changeQuantity(_ sender:UIStepper) {
-        updateValue(v: sender.value)
+    override var intrinsicContentSize: CGSize {
+        get {
+            return CGSize(width: 200, height: UIConstants.BUTTON_HEIGHT)
+        }
     }
     
 }

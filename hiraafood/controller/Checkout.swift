@@ -47,8 +47,18 @@ class CheckoutViewController: UIViewController {
     }
     
     @objc func createOrder() {
-        NSLog("----------- createOrder ------------ ")
+        
+        guard  let app = UIApplication.shared.delegate as? AppDelegate
+            else {return}
+        
+        let user:User = app.getUser()
+        let next:UIViewController = DeliveryController(
+            order: app.server.createOrder(items: cartView.modelObj.items),
+            addresses: app.server.getAddresses(user: user))
+        show(next, sender: self)
+        /*
         let url:String = "/order/?uid=tester"
+        
         let payload:Data? = cartView.modelObj.payload
         Server.singleton.post(
             url:url,
@@ -86,6 +96,7 @@ class CheckoutViewController: UIViewController {
                 self.alert(title: "", message:String(describing:error))
             }
         }
+     */
     
     }
     

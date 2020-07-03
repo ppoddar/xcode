@@ -2,22 +2,25 @@ import UIKit
 
 /*
  * Container view controller contains
- *     OrderView
+ *     OrderViewController
  *     AddressSelector
  * Also contans subviews of a label and a button
  */
 class DeliveryController: UIViewController {
-    var orderView: OrderView
+    var orderViewController: OrderView
     var selectAddressLabel: UILabel
     var paymentButton: UIButton
     var addressSelector: AddressSelectionView
     var content:UIStackView
     var layoutComplete:Bool
-    
-    let server:ServerProtocol = MockServer()
-    
+    /*
+     * construct with order and addresses
+     * A container view controller accepts
+     * all model object it requires to populate
+     * its subviews and child controllers
+     */
     init(order:Order, addresses:Dictionary<String,Address>) {
-        orderView          = OrderView(order: order)
+        orderViewController = OrderView(order: order)
         addressSelector    = AddressSelectionView(addresses:addresses)
         selectAddressLabel = UIFactory.label("select delivery address")
         paymentButton      = UIFactory.button("pay")
@@ -43,30 +46,29 @@ class DeliveryController: UIViewController {
     }
 
     override func viewDidLoad() {
-        NSLog("======== viewDidLoad =========")
+        NSLog("\(type(of:self)).viewDidLoad()")
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        orderView.reloadInputViews()
+        orderViewController.reloadInputViews()
         addressSelector.showAddress()
         NSLog("\(type(of:self)).view.frame \(self.view.frame)")
         NSLog("\(type(of:self)).view= \(Unmanaged.passUnretained(self.view).toOpaque())")
     }
     
     override func loadView() {
-        NSLog("======== \(type(of:self)).loadView =========")
+        NSLog("\(type(of:self)).loadView()")
         super.loadView()
-        NSLog("loadView().adding arranged subviews")
-        content.addArrangedSubview(orderView.view)
+        NSLog("\(type(of:self)).loadView() adding arranged subviews")
+        content.addArrangedSubview(orderViewController.view)
         content.addArrangedSubview(selectAddressLabel)
         content.addArrangedSubview(addressSelector)
         content.addArrangedSubview(paymentButton)
         
-        orderView.view.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.vertical)
+        orderViewController.view.setContentHuggingPriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.vertical)
         selectAddressLabel.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
-        UIFactory.border(selectAddressLabel)
-        UIFactory.border(addressSelector)
+        //UIFactory.border(selectAddressLabel)
+        //UIFactory.border(addressSelector)
 
-        self.view.addSubview(content)
         selectAddressLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         selectAddressLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.horizontal)
         paymentButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
@@ -74,7 +76,8 @@ class DeliveryController: UIViewController {
         
         paymentButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
     
-        //self.view.frame = CGRect(x:0,y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        self.view.addSubview(content)
+
         NSLog("\(type(of:self)).view.frame \(self.view.frame)")
         NSLog("\(type(of:self)).view \(Unmanaged.passUnretained(self.view).toOpaque())")
 
@@ -93,7 +96,7 @@ class DeliveryController: UIViewController {
         self.view.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
 //        let margins = self.view.layoutMarginsGuide
         
-        let orderTable = orderView.asTable
+        let orderTable = orderViewController.asTable
         NSLayoutConstraint.activate([
             content.topAnchor.constraint(equalTo: safeArea.topAnchor),
             content.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
@@ -108,13 +111,15 @@ class DeliveryController: UIViewController {
     }
      
     @objc func pay () {
+        
         let deliveryAddress = addressSelector.selectedAddress
         let billingAddress  = deliveryAddress
-        let invoice = server.createInvoice(
-            order: orderView.modelObj,
+        let app = UIApplication.shared.delegate as? AppDelegate
+        let invoice = app?.server.createInvoice(
+            order: orderViewController.modelObj,
             billingAddress: billingAddress,
             deliveryAddress: deliveryAddress)
-        let page = PaymentController(invoice: invoice)
+        let page = PaymentController(invoice: invoice!)
         
         show(page, sender: self)
     }

@@ -1,26 +1,16 @@
-//
-//  Checkout.swift
-//  hiraafood
-//
-//  Created by Pinaki Poddar on 6/28/20.
-//  Copyright © 2020 Digital Artisan. All rights reserved.
-//
-
 import UIKit
-//import SwiftyJSON
-
 class CheckoutViewController: UIViewController {
-    var cartView:CartView
+    var cartViewController:CartViewController
     var checkout:UIButton
     var back:UIButton
+    
     init(cart:Cart) {
-        self.cartView = CartView(cart: cart)
+        self.cartViewController = CartViewController(cart: cart)
         self.checkout = UIFactory.button("proceed to checkout")
         self.back     = UIFactory.button("continue shopping")
         super.init(nibName: nil, bundle: nil)
         back.addTarget(self, action: #selector(backPage), for: .touchUpInside)
         checkout.addTarget(self, action: #selector(createOrder), for: .touchUpInside)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -29,31 +19,40 @@ class CheckoutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.addViewController(cartView)
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.addViewController(cartViewController)
         self.view.addSubview(checkout)
         self.view.addSubview(back)
     }
     
     override func viewWillLayoutSubviews() {
-        cartView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        cartView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        cartView.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        cartView.view.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        super.viewWillLayoutSubviews()
+        let cartView:UIView = cartViewController.view
+        let safeArea = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+        cartView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+        cartView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+        cartView.widthAnchor.constraint(equalTo: safeArea.widthAnchor),
+        cartView.heightAnchor.constraint(equalTo: safeArea.heightAnchor),
         
-        checkout.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
-        back.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-        checkout.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        back.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        checkout.topAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -60),
+        back.topAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -100),
+        checkout.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+        back.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+        ])
+        
     }
     
     @objc func createOrder() {
-        
         guard  let app = UIApplication.shared.delegate as? AppDelegate
             else {return}
         
         let user:User = app.getUser()
         let next:UIViewController = DeliveryController(
-            order: app.server.createOrder(items: cartView.modelObj.items),
+            order: app.server.createOrder(items: cartViewController.modelObj.items),
             addresses: app.server.getAddresses(user: user))
         show(next, sender: self)
         /*

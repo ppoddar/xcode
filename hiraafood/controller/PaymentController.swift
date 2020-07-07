@@ -1,14 +1,14 @@
 import UIKit
 //import Razorpay
 class PaymentController: BaseViewController {
-    var invoiceView:InvoiceView
+    var invoiceView:InvoiceViewController
     //var billingAddress:Address  = Address()
     //var deliveryAddress:Address = Address()
     var content:UIStackView
     var paymentButton:UIButton
     var layoutComplete:Bool
      init(invoice:Invoice) {
-        self.invoiceView = InvoiceView(invoice:invoice)
+        self.invoiceView = InvoiceViewController(invoice:invoice)
         self.content = UIStackView(frame: .zero)
         //self.billingAddress = billingAddress
         //self.deliveryAddress = deliveryAddress

@@ -5,7 +5,7 @@ import Foundation
  * Control tabular view of a sectioned menu
  *
  */
-class OrderView: GenericTableViewController<Order,OrderItemView> {
+class OrderViewController: GenericTableViewController<Order,OrderItemView> {
     typealias Model = Order
     typealias Item  = OrderItem
     /*

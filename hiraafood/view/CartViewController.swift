@@ -5,7 +5,7 @@ import Foundation
  * Control tabular view of a sectioned menu
  *
  */
-class CartView: GenericTableViewController<Cart,OrderItemView> {
+class CartViewController: GenericTableViewController<Cart,OrderItemView> {
     typealias Model    = Cart
     typealias Element  = OrderItem
     /*

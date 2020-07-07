@@ -7,7 +7,7 @@ import UIKit
  * Also contans subviews of a label and a button
  */
 class DeliveryController: UIViewController {
-    var orderViewController: OrderView
+    var orderViewController: OrderViewController
     var selectAddressLabel: UILabel
     var paymentButton: UIButton
     var addressSelector: AddressSelectionView
@@ -20,7 +20,7 @@ class DeliveryController: UIViewController {
      * its subviews and child controllers
      */
     init(order:Order, addresses:Dictionary<String,Address>) {
-        orderViewController = OrderView(order: order)
+        orderViewController = OrderViewController(order: order)
         addressSelector    = AddressSelectionView(addresses:addresses)
         selectAddressLabel = UIFactory.label("select delivery address")
         paymentButton      = UIFactory.button("pay")

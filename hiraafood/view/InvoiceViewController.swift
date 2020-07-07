@@ -5,7 +5,7 @@ import Foundation
  * Control tabular view of a sectioned menu
  *
  */
-class InvoiceView:GenericTableViewController<Invoice,InvoiceItemView> {
+class InvoiceViewController:GenericTableViewController<Invoice,InvoiceItemView> {
     /*
      * create tabular view of a menu.
      * The view is grouped by menu items in category

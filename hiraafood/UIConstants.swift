@@ -9,21 +9,17 @@
 import Foundation
 import UIKit
 struct UIConstants {
-    static var APP_NAME:String = "Hiraafood"
-    static var TOP_MARGIN:CGFloat    = CGFloat(20)
-    static var LEFT_MARGIN:CGFloat   = CGFloat(20)
-    static var RIGHT_MARGIN:CGFloat  = CGFloat(80)
-    static var BOTTOM_MARGIN:CGFloat  = CGFloat(80)
-
+    static var APP_NAME:String       = "Hiraafood"
+    
     static var ROW_HEIGHT:CGFloat   = CGFloat(100)
     static var IMAGE_HEIGHT:CGFloat = CGFloat(100)
     static var LABEL_HEIGHT:CGFloat = CGFloat(24)
-    static var LINE_HEIGHT:CGFloat = CGFloat(24)
+    static var LINE_HEIGHT:CGFloat  = CGFloat(24)
 
     static var VGAP:CGFloat = CGFloat(24)
     static var HGAP:CGFloat = CGFloat(12)
     
-    static var BUTTON_WIDTH:CGFloat = CGFloat(200)
+    static var BUTTON_WIDTH:CGFloat  = CGFloat(200)
     static var BUTTON_HEIGHT:CGFloat = CGFloat(36)
     
     static var COLOR_HIGHLIGHT = UIColor(hexString: "#EDC7B7", alpha: 1.0)
@@ -63,3 +59,4 @@ extension UIColor {
         return String(format:"#%06x", rgb)
     }
 }
+

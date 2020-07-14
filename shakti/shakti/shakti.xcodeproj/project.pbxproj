@@ -1,0 +1,538 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		236259DF24B27D0700FA826B /* SoundPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236259DE24B27D0700FA826B /* SoundPlayerButton.swift */; };
+		236259E124B280DC00FA826B /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236259E024B280DC00FA826B /* ShareButton.swift */; };
+		236259E424B2B6EC00FA826B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236259E324B2B6EC00FA826B /* AVFoundation.framework */; };
+		236259F524B2B97A00FA826B /* melodies-of-joy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 236259F224B2B75D00FA826B /* melodies-of-joy.mp3 */; };
+		236259F624B2B97A00FA826B /* i_may_go.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 236259F424B2B76200FA826B /* i_may_go.mp3 */; };
+		236259F724B2B97A00FA826B /* jarasandha.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 236259F324B2B76000FA826B /* jarasandha.mp3 */; };
+		236259F824B2B97A00FA826B /* not_happy_moment.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 236259F124B2B75900FA826B /* not_happy_moment.mp3 */; };
+		236259F924B2B97A00FA826B /* hemanter_aryna.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 236259F024B2B75300FA826B /* hemanter_aryna.mp3 */; };
+		236259FA24B2EF3500FA826B /* TranslateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F7C24B24DC800362296 /* TranslateButton.swift */; };
+		236259FC24B3138A00FA826B /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236259FB24B3138A00FA826B /* NavigationButton.swift */; };
+		236259FE24B31FB100FA826B /* TOC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236259FD24B31FB100FA826B /* TOC.swift */; };
+		23625A0524B33F3B00FA826B /* jete-pari-kintu-keno-jabo.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0024B33F3B00FA826B /* jete-pari-kintu-keno-jabo.html */; };
+		23625A0624B33F3B00FA826B /* gache-gache-kobita-tangabo.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0124B33F3B00FA826B /* gache-gache-kobita-tangabo.html */; };
+		23625A0724B33F3B00FA826B /* footpath-badal-hoi-madhyarate.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0224B33F3B00FA826B /* footpath-badal-hoi-madhyarate.html */; };
+		23625A0824B33F3B00FA826B /* hemanter-oronye-ami-postman.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0324B33F3B00FA826B /* hemanter-oronye-ami-postman.html */; };
+		23625A0C24B33F4700FA826B /* valobaste-chesta-karo.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0924B33F4600FA826B /* valobaste-chesta-karo.html */; };
+		23625A0D24B33F4700FA826B /* sechhachari.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0A24B33F4700FA826B /* sechhachari.html */; };
+		23625A0E24B33F4700FA826B /* oboni-bari-acho.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0B24B33F4700FA826B /* oboni-bari-acho.html */; };
+		23625A1024B344D000FA826B /* melodies-of-joy.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A0F24B344D000FA826B /* melodies-of-joy.html */; };
+		23625A1324B3460600FA826B /* key.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A1124B3460600FA826B /* key.html */; };
+		23625A1624B3461900FA826B /* oboni-are-you-home.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A1524B3461900FA826B /* oboni-are-you-home.html */; };
+		23625A1824B397AE00FA826B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23625A1724B397AE00FA826B /* Extensions.swift */; };
+		23625A1E24B4B74300FA826B /* may-go-but-why.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A1A24B4B74300FA826B /* may-go-but-why.html */; };
+		23625A1F24B4B74300FA826B /* postmen-in-forest-of-fall.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A1B24B4B74300FA826B /* postmen-in-forest-of-fall.html */; };
+		23625A2024B4B74300FA826B /* not-happy-hour.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A1C24B4B74300FA826B /* not-happy-hour.html */; };
+		23625A2224B4BB8C00FA826B /* UIStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23625A2124B4BB8C00FA826B /* UIStyle.swift */; };
+		23625A2424B4E24600FA826B /* jorasandha.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A2324B4E24600FA826B /* jorasandha.html */; };
+		23625A2624B4E24F00FA826B /* take-me-back.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A2524B4E24F00FA826B /* take-me-back.html */; };
+		23625A2824B4EA1300FA826B /* anarchist.html in Resources */ = {isa = PBXBuildFile; fileRef = 23625A2724B4EA1300FA826B /* anarchist.html */; };
+		236CFE5624AFD0220052EA77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CFE5524AFD0220052EA77 /* AppDelegate.swift */; };
+		236CFE5824AFD0220052EA77 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CFE5724AFD0220052EA77 /* SceneDelegate.swift */; };
+		236CFE5A24AFD0220052EA77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CFE5924AFD0220052EA77 /* ViewController.swift */; };
+		236CFE5F24AFD0280052EA77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 236CFE5E24AFD0280052EA77 /* Assets.xcassets */; };
+		23851F5124AFF33C00362296 /* anondo-voirobi.html in Resources */ = {isa = PBXBuildFile; fileRef = 23851F5024AFF33C00362296 /* anondo-voirobi.html */; };
+		23851F5324B0297000362296 /* HeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F5224B0297000362296 /* HeaderViewController.swift */; };
+		23851F5524B0298D00362296 /* PoemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F5424B0298D00362296 /* PoemViewController.swift */; };
+		23851F5924B1008200362296 /* Bangla MN.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 23851F5824B1008100362296 /* Bangla MN.ttc */; };
+		23851F6C24B105FA00362296 /* chabi.html in Resources */ = {isa = PBXBuildFile; fileRef = 23851F6324B105FA00362296 /* chabi.html */; };
+		23851F6E24B1070300362296 /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F6D24B1070300362296 /* FileReader.swift */; };
+		23851F7024B10B2000362296 /* PoemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F6F24B10B2000362296 /* PoemView.swift */; };
+		23851F7724B1A7F500362296 /* TOCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F7624B1A7F500362296 /* TOCViewController.swift */; };
+		23851F7924B1A8EB00362296 /* Poem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F7824B1A8EB00362296 /* Poem.swift */; };
+		23851F7B24B1ABFB00362296 /* Poems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23851F7A24B1ABFB00362296 /* Poems.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		236259DE24B27D0700FA826B /* SoundPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayerButton.swift; sourceTree = "<group>"; };
+		236259E024B280DC00FA826B /* ShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButton.swift; sourceTree = "<group>"; };
+		236259E324B2B6EC00FA826B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		236259F024B2B75300FA826B /* hemanter_aryna.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hemanter_aryna.mp3; sourceTree = "<group>"; };
+		236259F124B2B75900FA826B /* not_happy_moment.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = not_happy_moment.mp3; sourceTree = "<group>"; };
+		236259F224B2B75D00FA826B /* melodies-of-joy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "melodies-of-joy.mp3"; sourceTree = "<group>"; };
+		236259F324B2B76000FA826B /* jarasandha.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jarasandha.mp3; sourceTree = "<group>"; };
+		236259F424B2B76200FA826B /* i_may_go.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = i_may_go.mp3; sourceTree = "<group>"; };
+		236259FB24B3138A00FA826B /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
+		236259FD24B31FB100FA826B /* TOC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOC.swift; sourceTree = "<group>"; };
+		23625A0024B33F3B00FA826B /* jete-pari-kintu-keno-jabo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "jete-pari-kintu-keno-jabo.html"; sourceTree = "<group>"; };
+		23625A0124B33F3B00FA826B /* gache-gache-kobita-tangabo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "gache-gache-kobita-tangabo.html"; sourceTree = "<group>"; };
+		23625A0224B33F3B00FA826B /* footpath-badal-hoi-madhyarate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "footpath-badal-hoi-madhyarate.html"; sourceTree = "<group>"; };
+		23625A0324B33F3B00FA826B /* hemanter-oronye-ami-postman.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "hemanter-oronye-ami-postman.html"; sourceTree = "<group>"; };
+		23625A0924B33F4600FA826B /* valobaste-chesta-karo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "valobaste-chesta-karo.html"; sourceTree = "<group>"; };
+		23625A0A24B33F4700FA826B /* sechhachari.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = sechhachari.html; sourceTree = "<group>"; };
+		23625A0B24B33F4700FA826B /* oboni-bari-acho.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "oboni-bari-acho.html"; sourceTree = "<group>"; };
+		23625A0F24B344D000FA826B /* melodies-of-joy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "melodies-of-joy.html"; sourceTree = "<group>"; };
+		23625A1124B3460600FA826B /* key.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = key.html; sourceTree = "<group>"; };
+		23625A1524B3461900FA826B /* oboni-are-you-home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "oboni-are-you-home.html"; sourceTree = "<group>"; };
+		23625A1724B397AE00FA826B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		23625A1A24B4B74300FA826B /* may-go-but-why.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "may-go-but-why.html"; sourceTree = "<group>"; };
+		23625A1B24B4B74300FA826B /* postmen-in-forest-of-fall.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "postmen-in-forest-of-fall.html"; sourceTree = "<group>"; };
+		23625A1C24B4B74300FA826B /* not-happy-hour.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "not-happy-hour.html"; sourceTree = "<group>"; };
+		23625A2124B4BB8C00FA826B /* UIStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyle.swift; sourceTree = "<group>"; };
+		23625A2324B4E24600FA826B /* jorasandha.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = jorasandha.html; sourceTree = "<group>"; };
+		23625A2524B4E24F00FA826B /* take-me-back.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "take-me-back.html"; sourceTree = "<group>"; };
+		23625A2724B4EA1300FA826B /* anarchist.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = anarchist.html; sourceTree = "<group>"; };
+		236CFE5224AFD0220052EA77 /* shakti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shakti.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		236CFE5524AFD0220052EA77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		236CFE5724AFD0220052EA77 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		236CFE5924AFD0220052EA77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		236CFE5E24AFD0280052EA77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		236CFE6124AFD0280052EA77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		236CFE6324AFD0280052EA77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23851F5024AFF33C00362296 /* anondo-voirobi.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "anondo-voirobi.html"; sourceTree = "<group>"; };
+		23851F5224B0297000362296 /* HeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewController.swift; sourceTree = "<group>"; };
+		23851F5424B0298D00362296 /* PoemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoemViewController.swift; sourceTree = "<group>"; };
+		23851F5624B0488A00362296 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
+		23851F5824B1008100362296 /* Bangla MN.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bangla MN.ttc"; sourceTree = "<group>"; };
+		23851F6324B105FA00362296 /* chabi.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = chabi.html; sourceTree = "<group>"; };
+		23851F6D24B1070300362296 /* FileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReader.swift; sourceTree = "<group>"; };
+		23851F6F24B10B2000362296 /* PoemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoemView.swift; sourceTree = "<group>"; };
+		23851F7424B1957E00362296 /* TranslationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationViewController.swift; sourceTree = "<group>"; };
+		23851F7624B1A7F500362296 /* TOCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOCViewController.swift; sourceTree = "<group>"; };
+		23851F7824B1A8EB00362296 /* Poem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poem.swift; sourceTree = "<group>"; };
+		23851F7A24B1ABFB00362296 /* Poems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poems.swift; sourceTree = "<group>"; };
+		23851F7C24B24DC800362296 /* TranslateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateButton.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		236CFE4F24AFD0220052EA77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				236259E424B2B6EC00FA826B /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		236259E224B2B6EB00FA826B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				236259E324B2B6EC00FA826B /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		236259EF24B2B73300FA826B /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				236259F224B2B75D00FA826B /* melodies-of-joy.mp3 */,
+				236259F424B2B76200FA826B /* i_may_go.mp3 */,
+				236259F324B2B76000FA826B /* jarasandha.mp3 */,
+				236259F124B2B75900FA826B /* not_happy_moment.mp3 */,
+				236259F024B2B75300FA826B /* hemanter_aryna.mp3 */,
+			);
+			path = audio;
+			sourceTree = "<group>";
+		};
+		236CFE4924AFD0220052EA77 = {
+			isa = PBXGroup;
+			children = (
+				23851F5A24B1008D00362296 /* fonts */,
+				23851F4C24AFF02000362296 /* poems */,
+				236CFE5424AFD0220052EA77 /* shakti */,
+				236CFE5324AFD0220052EA77 /* Products */,
+				236259E224B2B6EB00FA826B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		236CFE5324AFD0220052EA77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				236CFE5224AFD0220052EA77 /* shakti.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		236CFE5424AFD0220052EA77 /* shakti */ = {
+			isa = PBXGroup;
+			children = (
+				236CFE5524AFD0220052EA77 /* AppDelegate.swift */,
+				236CFE5724AFD0220052EA77 /* SceneDelegate.swift */,
+				236CFE5924AFD0220052EA77 /* ViewController.swift */,
+				236CFE5E24AFD0280052EA77 /* Assets.xcassets */,
+				236CFE6024AFD0280052EA77 /* LaunchScreen.storyboard */,
+				236CFE6324AFD0280052EA77 /* Info.plist */,
+				23851F5224B0297000362296 /* HeaderViewController.swift */,
+				23851F5424B0298D00362296 /* PoemViewController.swift */,
+				23851F5624B0488A00362296 /* FlexibleTextView.swift */,
+				23851F6D24B1070300362296 /* FileReader.swift */,
+				23851F6F24B10B2000362296 /* PoemView.swift */,
+				23851F7424B1957E00362296 /* TranslationViewController.swift */,
+				23851F7624B1A7F500362296 /* TOCViewController.swift */,
+				23851F7824B1A8EB00362296 /* Poem.swift */,
+				23851F7A24B1ABFB00362296 /* Poems.swift */,
+				23851F7C24B24DC800362296 /* TranslateButton.swift */,
+				236259DE24B27D0700FA826B /* SoundPlayerButton.swift */,
+				236259E024B280DC00FA826B /* ShareButton.swift */,
+				236259FB24B3138A00FA826B /* NavigationButton.swift */,
+				236259FD24B31FB100FA826B /* TOC.swift */,
+				23625A1724B397AE00FA826B /* Extensions.swift */,
+				23625A2124B4BB8C00FA826B /* UIStyle.swift */,
+			);
+			path = shakti;
+			sourceTree = "<group>";
+		};
+		23851F4C24AFF02000362296 /* poems */ = {
+			isa = PBXGroup;
+			children = (
+				236259EF24B2B73300FA826B /* audio */,
+				23851F7124B18B7900362296 /* english */,
+				23851F4D24AFF02000362296 /* bangla */,
+			);
+			name = poems;
+			path = shakti/poems;
+			sourceTree = "<group>";
+		};
+		23851F4D24AFF02000362296 /* bangla */ = {
+			isa = PBXGroup;
+			children = (
+				23625A2324B4E24600FA826B /* jorasandha.html */,
+				23625A0B24B33F4700FA826B /* oboni-bari-acho.html */,
+				23625A0A24B33F4700FA826B /* sechhachari.html */,
+				23625A0924B33F4600FA826B /* valobaste-chesta-karo.html */,
+				23625A0224B33F3B00FA826B /* footpath-badal-hoi-madhyarate.html */,
+				23625A0124B33F3B00FA826B /* gache-gache-kobita-tangabo.html */,
+				23625A0324B33F3B00FA826B /* hemanter-oronye-ami-postman.html */,
+				23625A0024B33F3B00FA826B /* jete-pari-kintu-keno-jabo.html */,
+				23851F6324B105FA00362296 /* chabi.html */,
+				23851F5024AFF33C00362296 /* anondo-voirobi.html */,
+			);
+			path = bangla;
+			sourceTree = "<group>";
+		};
+		23851F5A24B1008D00362296 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				23851F5824B1008100362296 /* Bangla MN.ttc */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		23851F7124B18B7900362296 /* english */ = {
+			isa = PBXGroup;
+			children = (
+				23625A2724B4EA1300FA826B /* anarchist.html */,
+				23625A2524B4E24F00FA826B /* take-me-back.html */,
+				23625A1A24B4B74300FA826B /* may-go-but-why.html */,
+				23625A1C24B4B74300FA826B /* not-happy-hour.html */,
+				23625A1B24B4B74300FA826B /* postmen-in-forest-of-fall.html */,
+				23625A1524B3461900FA826B /* oboni-are-you-home.html */,
+				23625A1124B3460600FA826B /* key.html */,
+				23625A0F24B344D000FA826B /* melodies-of-joy.html */,
+			);
+			path = english;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		236CFE5124AFD0220052EA77 /* shakti */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 236CFE6624AFD0280052EA77 /* Build configuration list for PBXNativeTarget "shakti" */;
+			buildPhases = (
+				236CFE4E24AFD0220052EA77 /* Sources */,
+				236CFE4F24AFD0220052EA77 /* Frameworks */,
+				236CFE5024AFD0220052EA77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = shakti;
+			productName = shakti;
+			productReference = 236CFE5224AFD0220052EA77 /* shakti.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		236CFE4A24AFD0220052EA77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1150;
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = "Digital Artisan";
+				TargetAttributes = {
+					236CFE5124AFD0220052EA77 = {
+						CreatedOnToolsVersion = 11.5;
+					};
+				};
+			};
+			buildConfigurationList = 236CFE4D24AFD0220052EA77 /* Build configuration list for PBXProject "shakti" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 236CFE4924AFD0220052EA77;
+			productRefGroup = 236CFE5324AFD0220052EA77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				236CFE5124AFD0220052EA77 /* shakti */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		236CFE5024AFD0220052EA77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				236259F524B2B97A00FA826B /* melodies-of-joy.mp3 in Resources */,
+				236259F624B2B97A00FA826B /* i_may_go.mp3 in Resources */,
+				23625A1024B344D000FA826B /* melodies-of-joy.html in Resources */,
+				23625A2624B4E24F00FA826B /* take-me-back.html in Resources */,
+				236259F724B2B97A00FA826B /* jarasandha.mp3 in Resources */,
+				23625A0724B33F3B00FA826B /* footpath-badal-hoi-madhyarate.html in Resources */,
+				236259F824B2B97A00FA826B /* not_happy_moment.mp3 in Resources */,
+				236259F924B2B97A00FA826B /* hemanter_aryna.mp3 in Resources */,
+				23625A1F24B4B74300FA826B /* postmen-in-forest-of-fall.html in Resources */,
+				23625A0824B33F3B00FA826B /* hemanter-oronye-ami-postman.html in Resources */,
+				23625A0E24B33F4700FA826B /* oboni-bari-acho.html in Resources */,
+				23625A0524B33F3B00FA826B /* jete-pari-kintu-keno-jabo.html in Resources */,
+				23625A0624B33F3B00FA826B /* gache-gache-kobita-tangabo.html in Resources */,
+				23625A2824B4EA1300FA826B /* anarchist.html in Resources */,
+				23851F6C24B105FA00362296 /* chabi.html in Resources */,
+				23625A1E24B4B74300FA826B /* may-go-but-why.html in Resources */,
+				23625A0D24B33F4700FA826B /* sechhachari.html in Resources */,
+				236CFE5F24AFD0280052EA77 /* Assets.xcassets in Resources */,
+				23625A2024B4B74300FA826B /* not-happy-hour.html in Resources */,
+				23851F5924B1008200362296 /* Bangla MN.ttc in Resources */,
+				23625A1624B3461900FA826B /* oboni-are-you-home.html in Resources */,
+				23625A1324B3460600FA826B /* key.html in Resources */,
+				23625A2424B4E24600FA826B /* jorasandha.html in Resources */,
+				23851F5124AFF33C00362296 /* anondo-voirobi.html in Resources */,
+				23625A0C24B33F4700FA826B /* valobaste-chesta-karo.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		236CFE4E24AFD0220052EA77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				236259FA24B2EF3500FA826B /* TranslateButton.swift in Sources */,
+				236CFE5A24AFD0220052EA77 /* ViewController.swift in Sources */,
+				23851F5524B0298D00362296 /* PoemViewController.swift in Sources */,
+				23851F6E24B1070300362296 /* FileReader.swift in Sources */,
+				23851F7724B1A7F500362296 /* TOCViewController.swift in Sources */,
+				23851F5324B0297000362296 /* HeaderViewController.swift in Sources */,
+				236CFE5624AFD0220052EA77 /* AppDelegate.swift in Sources */,
+				236259FC24B3138A00FA826B /* NavigationButton.swift in Sources */,
+				23851F7024B10B2000362296 /* PoemView.swift in Sources */,
+				236259E124B280DC00FA826B /* ShareButton.swift in Sources */,
+				236CFE5824AFD0220052EA77 /* SceneDelegate.swift in Sources */,
+				23625A2224B4BB8C00FA826B /* UIStyle.swift in Sources */,
+				23625A1824B397AE00FA826B /* Extensions.swift in Sources */,
+				236259DF24B27D0700FA826B /* SoundPlayerButton.swift in Sources */,
+				23851F7924B1A8EB00362296 /* Poem.swift in Sources */,
+				236259FE24B31FB100FA826B /* TOC.swift in Sources */,
+				23851F7B24B1ABFB00362296 /* Poems.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		236CFE6024AFD0280052EA77 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				236CFE6124AFD0280052EA77 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		236CFE6424AFD0280052EA77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		236CFE6524AFD0280052EA77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		236CFE6724AFD0280052EA77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BP4LR4639;
+				INFOPLIST_FILE = shakti/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "digital-artisan.us.shakti";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		236CFE6824AFD0280052EA77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BP4LR4639;
+				INFOPLIST_FILE = shakti/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "digital-artisan.us.shakti";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		236CFE4D24AFD0220052EA77 /* Build configuration list for PBXProject "shakti" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				236CFE6424AFD0280052EA77 /* Debug */,
+				236CFE6524AFD0280052EA77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		236CFE6624AFD0280052EA77 /* Build configuration list for PBXNativeTarget "shakti" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				236CFE6724AFD0280052EA77 /* Debug */,
+				236CFE6824AFD0280052EA77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 236CFE4A24AFD0220052EA77 /* Project object */;
+}
